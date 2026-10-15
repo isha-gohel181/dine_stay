@@ -257,7 +257,7 @@ def build_pdf(filename="DineStay_Software_Requirements_Specification_SRS.pdf"):
         [Paragraph("<b>Prepared By</b>", table_cell), Paragraph("Future IT Touch Pvt. Ltd.", table_cell)],
         [Paragraph("<b>Prepared For</b>", table_cell), Paragraph("Client Executive Team / Stakeholders", table_cell)],
         [Paragraph("<b>Document Type</b>", table_cell), Paragraph("Software Requirements Specification (SRS)", table_cell)],
-        [Paragraph("<b>UI Verification</b>", table_cell), Paragraph("35 High-Fidelity Mobile Application Wireframes & Web Portals", table_cell)],
+        [Paragraph("<b>UI Verification</b>", table_cell), Paragraph("42 High-Fidelity Mobile Application Wireframes & Web Portals", table_cell)],
         [Paragraph("<b>Status</b>", table_cell), Paragraph("Approved / Governing Implementation Document", table_cell)],
     ]
     t_info = Table(doc_info_data, colWidths=[160, 327])
@@ -312,7 +312,7 @@ def build_pdf(filename="DineStay_Software_Requirements_Specification_SRS.pdf"):
 
     deliv_data = [
         [Paragraph("Module", table_header), Paragraph("Target Platform", table_header), Paragraph("Core Technology", table_header), Paragraph("Scope Summary", table_header)],
-        [Paragraph("<b>Customer Mobile App</b>", table_cell), Paragraph("Android & iOS", table_cell), Paragraph("Flutter 3.x / Dart", table_cell), Paragraph("35 Verified UI Screens, Discovery, Bookings, Payments, Profile", table_cell)],
+        [Paragraph("<b>Customer Mobile App</b>", table_cell), Paragraph("Android & iOS", table_cell), Paragraph("Flutter 3.x / Dart", table_cell), Paragraph("42 Verified UI Screens, Discovery, Bookings, Payments, Profile", table_cell)],
         [Paragraph("<b>Restaurant Business Portal</b>", table_cell), Paragraph("Web (Responsive)", table_cell), Paragraph("ReactJS / Tailwind", table_cell), Paragraph("Menu builder, slot allocation, live reservations table, analytics", table_cell)],
         [Paragraph("<b>Hotel Business Portal</b>", table_cell), Paragraph("Web (Responsive)", table_cell), Paragraph("ReactJS / Tailwind", table_cell), Paragraph("Room category management, daily tariff control, guest check-ins", table_cell)],
         [Paragraph("<b>Party Hall Business Portal</b>", table_cell), Paragraph("Web (Responsive)", table_cell), Paragraph("ReactJS / Tailwind", table_cell), Paragraph("Hall calendar, booking leads, package pricing, catering packages", table_cell)],
@@ -392,51 +392,58 @@ def build_pdf(filename="DineStay_Software_Requirements_Specification_SRS.pdf"):
 
     story.append(PageBreak())
 
-    # ================= PAGE 5: COMPLETE 35-SCREEN MOBILE UI SPECIFICATION =================
+    # ================= PAGE 5: COMPLETE 42-SCREEN MOBILE UI SPECIFICATION =================
     story.append(Paragraph("6. Customer Mobile Application – UI Screen Inventory", sec_heading))
     story.append(Paragraph(
-        "The customer mobile application consists of <b>35 purpose-built screens</b> matching the verified UI wireframe specification. "
+        "The customer mobile application consists of <b>42 purpose-built screens</b> matching the verified UI wireframe specification. "
         "Each screen has been designed according to DineStay's forest green & warm terracotta visual identity:",
         body_text
     ))
 
     screens_data = [
         [Paragraph("#", table_header), Paragraph("Screen Name", table_header), Paragraph("Category / Row", table_header), Paragraph("Key Functional Components & Interactivity", table_header)],
-        [Paragraph("1", table_cell), Paragraph("<b>Splash Screen</b>", table_cell), Paragraph("Row 1: Onboarding", table_cell), Paragraph("Brand logo, 'DineStay' logotype, tagline 'Restaurants • Hotels • Experiences', culinary backdrop.", table_cell)],
+        [Paragraph("1", table_cell), Paragraph("<b>Splash Screen</b>", table_cell), Paragraph("Row 1: Onboarding", table_cell), Paragraph("Full-bleed dining backdrop, DineStay pin badge, tagline 'Restaurants • Hotels • Experiences', carousel dashes.", table_cell)],
         [Paragraph("2", table_cell), Paragraph("<b>Onboarding 1</b>", table_cell), Paragraph("Row 1: Onboarding", table_cell), Paragraph("Restaurants focus, circular hero illustration, pagination indicator, Skip & Next CTA.", table_cell)],
         [Paragraph("3", table_cell), Paragraph("<b>Onboarding 2</b>", table_cell), Paragraph("Row 1: Onboarding", table_cell), Paragraph("Hotel stays focus, cozy luxury bed illustration, pagination indicator, Skip & Next CTA.", table_cell)],
         [Paragraph("4", table_cell), Paragraph("<b>Onboarding 3</b>", table_cell), Paragraph("Row 1: Onboarding", table_cell), Paragraph("Best offers focus, digital discount vouchers illustration, 'Get Started' action.", table_cell)],
         [Paragraph("5", table_cell), Paragraph("<b>Login Screen</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("Email/Mobile input, Password, Forgot Password link, Google & Apple social OAuth buttons.", table_cell)],
-        [Paragraph("6", table_cell), Paragraph("<b>Create Account</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("Customer / Business pill toggle, Full Name, Mobile, Email, Password, Terms agreement checkbox.", table_cell)],
-        [Paragraph("7", table_cell), Paragraph("<b>OTP Verification</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("6-digit auto-advancing PIN inputs, resend countdown timer (00:25), Secure verification CTA.", table_cell)],
-        [Paragraph("8", table_cell), Paragraph("<b>Home / Explore</b>", table_cell), Paragraph("Row 1: Discovery", table_cell), Paragraph("Location picker (Chandigarh), notification bell, category icons (4), Flat 20% banner, Popular cards.", table_cell)],
-        [Paragraph("9", table_cell), Paragraph("<b>Search & Filters</b>", table_cell), Paragraph("Row 1: Discovery", table_cell), Paragraph("Search input, dynamic filter chips (Cuisine, Rating 4.0+, Offers, Sort), search result count.", table_cell)],
-        [Paragraph("10", table_cell), Paragraph("<b>Restaurant Details</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Hero gallery, star badge, distance, Call / Directions / Share / Save, Overview / Menu tabs.", table_cell)],
-        [Paragraph("11", table_cell), Paragraph("<b>Restaurant Menu</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Menu category chips (Recommended, Starters, Mains), Veg/Non-Veg indicators, pricing, Add button.", table_cell)],
-        [Paragraph("12", table_cell), Paragraph("<b>Table Reservation</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Horizontal date picker, lunch/dinner time slots, guest counter [- 2 +], special request field.", table_cell)],
-        [Paragraph("13", table_cell), Paragraph("<b>Review Reservation</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Booking summary card, chosen venue, date, time, party size, notes, Confirm Reservation CTA.", table_cell)],
-        [Paragraph("14", table_cell), Paragraph("<b>Party Halls List</b>", table_cell), Paragraph("Row 2: Banquets", table_cell), Paragraph("Found halls count, venue photo cards (The Grand Hall, Royal Banquet), pricing from ₹25,000.", table_cell)],
-        [Paragraph("15", table_cell), Paragraph("<b>Party Hall Details</b>", table_cell), Paragraph("Row 2: Banquets", table_cell), Paragraph("Grand ballroom hero, tags (Weddings, Corporate), capacity (50-300), parking, in-house catering.", table_cell)],
-        [Paragraph("16", table_cell), Paragraph("<b>Hotels Search</b>", table_cell), Paragraph("Row 2: Hotels", table_cell), Paragraph("Dates & occupancy bar, Price/Rating chips, Hotel cards (Hyatt Regency, Taj) with amenities.", table_cell)],
-        [Paragraph("17", table_cell), Paragraph("<b>Hotel Details</b>", table_cell), Paragraph("Row 2: Hotels", table_cell), Paragraph("Luxury room hero, amenities grid (Pool, Wi-Fi, Spa, Dining), about property, View Rooms CTA.", table_cell)],
-        [Paragraph("18", table_cell), Paragraph("<b>Select Room</b>", table_cell), Paragraph("Row 3: Stays", table_cell), Paragraph("Room cards: King Room (₹9,800), Twin Room (₹11,500), Suite Room (₹15,200), Select button.", table_cell)],
-        [Paragraph("19", table_cell), Paragraph("<b>Hotel Booking Review</b>", table_cell), Paragraph("Row 3: Stays", table_cell), Paragraph("Check-in/out dates, price computation (Room ₹9,800 + Taxes ₹1,200 = ₹10,200), Proceed to Payment.", table_cell)],
-        [Paragraph("20", table_cell), Paragraph("<b>Payment Method</b>", table_cell), Paragraph("Row 3: Checkout", table_cell), Paragraph("Payment options: UPI (GPay/PhonePe), Credit/Debit Card, Net Banking, Wallet, Save card option.", table_cell)],
-        [Paragraph("21", table_cell), Paragraph("<b>Booking Confirmed</b>", table_cell), Paragraph("Row 3: Checkout", table_cell), Paragraph("Celebratory checkmark, Booking ID #BR25678, View Booking & Share actions.", table_cell)],
-        [Paragraph("22", table_cell), Paragraph("<b>My Bookings</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Tabs: Upcoming (2), Past (5), Cancelled (1); booking cards with View Details & Cancel actions.", table_cell)],
-        [Paragraph("23", table_cell), Paragraph("<b>Cancel Reservation</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Warning prompt, reservation summary, dropdown cancellation reasons, Confirm Cancel & Keep CTA.", table_cell)],
-        [Paragraph("24", table_cell), Paragraph("<b>Notifications</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Filter tabs (All, Bookings, Offers, Updates), timestamped interactive notification cards.", table_cell)],
-        [Paragraph("25", table_cell), Paragraph("<b>User Profile</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Avatar, name (Sneha Patel), contact details, links to Bookings, Addresses, Settings, Logout.", table_cell)],
-        [Paragraph("26", table_cell), Paragraph("<b>Account Settings</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Profile info, change password, push notification toggles, language, privacy policy, app version.", table_cell)],
-        [Paragraph("27", table_cell), Paragraph("<b>Offers & Coupons</b>", table_cell), Paragraph("Row 4: Promotions", table_cell), Paragraph("Coupon cards: FLAT 20% OFF (DINE20), FLAT 15% OFF (STAY15), category tabs, one-tap Apply.", table_cell)],
-        [Paragraph("28", table_cell), Paragraph("<b>Favorites Wishlist</b>", table_cell), Paragraph("Row 4: Discovery", table_cell), Paragraph("Saved restaurants, hotels, and party halls with instant booking shortcuts.", table_cell)],
-        [Paragraph("29", table_cell), Paragraph("<b>Saved Addresses</b>", table_cell), Paragraph("Row 4: Account", table_cell), Paragraph("Home & Work address cards (Sector 26 / Sector 22 Chandigarh), '+ Add New Address' action.", table_cell)],
-        [Paragraph("30", table_cell), Paragraph("<b>Help & Support</b>", table_cell), Paragraph("Row 4: Support", table_cell), Paragraph("Interactive FAQ accordion, Contact Form, Report Issue, Feedback, and Direct Call shortcut.", table_cell)],
-        [Paragraph("31", table_cell), Paragraph("<b>No Results Found</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Clean empty search illustration, helpful corrective tips, 'Clear Filters' recovery button.", table_cell)],
-        [Paragraph("32", table_cell), Paragraph("<b>Loading State (List)</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("CSS shimmer skeleton cards matching restaurant and hotel search result layouts.", table_cell)],
-        [Paragraph("33", table_cell), Paragraph("<b>Loading State (Grid)</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Skeleton placeholders for image thumbnails and detail cards during network fetch.", table_cell)],
-        [Paragraph("34", table_cell), Paragraph("<b>Error State</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("'Something Went Wrong' illustration, descriptive error message, 'Try Again' reload CTA.", table_cell)],
-        [Paragraph("35", table_cell), Paragraph("<b>Empty Bookings</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Folder/calendar icon, 'No Bookings Yet' notice, 'Explore Now' navigation shortcut.", table_cell)],
+        [Paragraph("6", table_cell), Paragraph("<b>Forgot Password</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("Security key badge, SMS/Email delivery toggle, mobile input with +91 flag, Send Recovery Code CTA.", table_cell)],
+        [Paragraph("7", table_cell), Paragraph("<b>Create Account</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("Customer / Business pill toggle, Full Name, Mobile (+91), Email, Password, Terms agreement checkbox.", table_cell)],
+        [Paragraph("8", table_cell), Paragraph("<b>OTP Verification</b>", table_cell), Paragraph("Row 1: Auth", table_cell), Paragraph("6-digit discrete PIN inputs, resend countdown timer (00:25), Secure verification CTA.", table_cell)],
+        [Paragraph("9", table_cell), Paragraph("<b>City & Location Selector</b>", table_cell), Paragraph("Row 1: Discovery", table_cell), Paragraph("Search input, GPS auto-detect button, popular city cards (Chandigarh, Mohali, Panchkula, Delhi, Mumbai).", table_cell)],
+        [Paragraph("10", table_cell), Paragraph("<b>Home / Explore</b>", table_cell), Paragraph("Row 1: Discovery", table_cell), Paragraph("Location picker, notification bell, category icons (4), Flat 20% promo carousel, popular venues.", table_cell)],
+        [Paragraph("11", table_cell), Paragraph("<b>Search & Filters</b>", table_cell), Paragraph("Row 2: Discovery", table_cell), Paragraph("Search input, dynamic filter chips (Cuisine, Rating 4.0+, Offers, Sort), search result count.", table_cell)],
+        [Paragraph("12", table_cell), Paragraph("<b>Restaurant Details</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Hero gallery, star badge, distance, Call / Directions / Share / Save, Overview / Menu / Photos tabs.", table_cell)],
+        [Paragraph("13", table_cell), Paragraph("<b>Restaurant Photo Gallery</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Full-screen photo grid (48 photos), category tabs (Ambiance, Food & Drinks, Rooftop), Reserve Table CTA.", table_cell)],
+        [Paragraph("14", table_cell), Paragraph("<b>Restaurant Menu</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Category chips (Recommended, Starters, Mains), Veg/Non-Veg indicators, pricing, Add to order button.", table_cell)],
+        [Paragraph("15", table_cell), Paragraph("<b>Table Reservation</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Horizontal date picker, lunch/dinner time slots, guest counter [- 2 +], special request notes.", table_cell)],
+        [Paragraph("16", table_cell), Paragraph("<b>Review Reservation</b>", table_cell), Paragraph("Row 2: Dining", table_cell), Paragraph("Booking summary card, chosen venue, date, time, party size, cancellation policy, Confirm Reservation CTA.", table_cell)],
+        [Paragraph("17", table_cell), Paragraph("<b>Party Halls List</b>", table_cell), Paragraph("Row 2: Banquets", table_cell), Paragraph("Found halls count, venue photo cards (The Grand Hall, Royal Banquet), pricing from ₹25,000.", table_cell)],
+        [Paragraph("18", table_cell), Paragraph("<b>Party Hall Details</b>", table_cell), Paragraph("Row 2: Banquets", table_cell), Paragraph("Grand ballroom hero, tags (Weddings, Corporate), capacity (50-300), parking, in-house catering.", table_cell)],
+        [Paragraph("19", table_cell), Paragraph("<b>Hotels Search</b>", table_cell), Paragraph("Row 2: Hotels", table_cell), Paragraph("Dates & occupancy bar, Price/Rating chips, Hotel cards (Hyatt Regency, Taj) with amenities.", table_cell)],
+        [Paragraph("20", table_cell), Paragraph("<b>Hotel Details</b>", table_cell), Paragraph("Row 2: Hotels", table_cell), Paragraph("Luxury room hero, amenities grid (Pool, Wi-Fi, Spa, Dining), about property, View Rooms CTA.", table_cell)],
+        [Paragraph("21", table_cell), Paragraph("<b>Hotel Photo Gallery</b>", table_cell), Paragraph("Row 2: Hotels", table_cell), Paragraph("36 verified photos, category tabs (Executive King, Infinity Pool, Lobby, Spa), Choose Rooms CTA.", table_cell)],
+        [Paragraph("22", table_cell), Paragraph("<b>Select Room</b>", table_cell), Paragraph("Row 3: Stays", table_cell), Paragraph("Room cards: King Room (₹9,800), Twin Room (₹11,500), Suite Room (₹15,200), Select button.", table_cell)],
+        [Paragraph("23", table_cell), Paragraph("<b>Hotel Booking Review</b>", table_cell), Paragraph("Row 3: Stays", table_cell), Paragraph("Check-in/out dates, price computation (Room ₹9,800 + Taxes ₹1,200 = ₹10,200), Proceed to Payment.", table_cell)],
+        [Paragraph("24", table_cell), Paragraph("<b>Payment Method</b>", table_cell), Paragraph("Row 3: Checkout", table_cell), Paragraph("Payment options: UPI (GPay/PhonePe), Credit/Debit Card, Net Banking, Wallet, Save card option.", table_cell)],
+        [Paragraph("25", table_cell), Paragraph("<b>Booking Confirmed</b>", table_cell), Paragraph("Row 3: Checkout", table_cell), Paragraph("Celebratory checkmark, Booking ID #BR25678, View Digital Pass & Share actions.", table_cell)],
+        [Paragraph("26", table_cell), Paragraph("<b>Digital Booking Pass (QR)</b>", table_cell), Paragraph("Row 3: Checkout", table_cell), Paragraph("Digital perforated ticket card, scannable QR Code for host check-in, reference #DS-78219-CH, directions.", table_cell)],
+        [Paragraph("27", table_cell), Paragraph("<b>My Bookings</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Tabs: Upcoming (2), Past (5), Cancelled (1); booking cards with View Pass & Cancel actions.", table_cell)],
+        [Paragraph("28", table_cell), Paragraph("<b>Cancel Reservation</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Warning prompt, reservation summary, dropdown cancellation reasons, Confirm Cancel & Keep CTA.", table_cell)],
+        [Paragraph("29", table_cell), Paragraph("<b>Rate & Review Experience</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("5-star interactive rating, feedback praise tags, detailed comment area, +50 DinePoints reward bonus.", table_cell)],
+        [Paragraph("30", table_cell), Paragraph("<b>Notifications Inbox</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Filter tabs (All, Bookings, Offers, Updates), timestamped interactive notification cards.", table_cell)],
+        [Paragraph("31", table_cell), Paragraph("<b>User Profile</b>", table_cell), Paragraph("Row 3: Account", table_cell), Paragraph("Avatar, name (Sneha Patel), contact details, links to Bookings, Addresses, Settings, Logout.", table_cell)],
+        [Paragraph("32", table_cell), Paragraph("<b>Account Settings</b>", table_cell), Paragraph("Row 4: Account", table_cell), Paragraph("Profile info, change password, push notification toggles, language, privacy policy, app version.", table_cell)],
+        [Paragraph("33", table_cell), Paragraph("<b>Change Password & Security</b>", table_cell), Paragraph("Row 4: Security", table_cell), Paragraph("Current password, new password with strength meter, confirm password, 2-Factor Authentication toggle.", table_cell)],
+        [Paragraph("34", table_cell), Paragraph("<b>Offers & Coupons</b>", table_cell), Paragraph("Row 4: Promotions", table_cell), Paragraph("Coupon cards: FLAT 20% OFF (DINE20), FLAT 15% OFF (STAY15), category tabs, one-tap Apply.", table_cell)],
+        [Paragraph("35", table_cell), Paragraph("<b>Favorites Wishlist</b>", table_cell), Paragraph("Row 4: Discovery", table_cell), Paragraph("Saved restaurants, hotels, and party halls with instant booking shortcuts.", table_cell)],
+        [Paragraph("36", table_cell), Paragraph("<b>Saved Addresses</b>", table_cell), Paragraph("Row 4: Account", table_cell), Paragraph("Home & Work address cards (Sector 26 / Sector 22 Chandigarh), '+ Add New Address' action.", table_cell)],
+        [Paragraph("37", table_cell), Paragraph("<b>Help & Support</b>", table_cell), Paragraph("Row 4: Support", table_cell), Paragraph("Interactive FAQ accordion, Contact Form, Report Issue, Feedback, and Direct Call shortcut.", table_cell)],
+        [Paragraph("38", table_cell), Paragraph("<b>No Results Found</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Clean empty search illustration, helpful corrective tips, 'Clear Filters' recovery button.", table_cell)],
+        [Paragraph("39", table_cell), Paragraph("<b>Loading State (List)</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("CSS shimmer skeleton cards matching restaurant and hotel search result layouts.", table_cell)],
+        [Paragraph("40", table_cell), Paragraph("<b>Loading State (Grid)</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Skeleton placeholders for image thumbnails and detail cards during network fetch.", table_cell)],
+        [Paragraph("41", table_cell), Paragraph("<b>Error State</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("'Something Went Wrong' illustration, descriptive error message, 'Try Again' reload CTA.", table_cell)],
+        [Paragraph("42", table_cell), Paragraph("<b>Empty Bookings</b>", table_cell), Paragraph("Row 4: States", table_cell), Paragraph("Folder/calendar icon, 'No Bookings Yet' notice, 'Explore Now' navigation shortcut.", table_cell)],
     ]
 
     t_screens = Table(screens_data, colWidths=[20, 115, 95, 257])
