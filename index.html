@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DineStay – Restaurant, Hotel & Banquet Reservation Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #0F4735;
+      --primary-dark: #082F22;
+      --primary-light: #1E6B52;
+      --accent: #E65100;
+      --accent-light: #FF7A30;
+      --bg-page: #F6F8F7;
+      --bg-card: #FFFFFF;
+      --text-main: #1C2522;
+      --text-muted: #727C77;
+      --border-color: #E2E8E5;
+      --badge-bg: #E8F5EE;
+      --badge-text: #0F4735;
+      --star-color: #FFA41C;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0E1312;
+      color: #E2E8E5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Global Header Bar */
+    .top-control-bar {
+      height: 64px;
+      background: #161D1B;
+      border-bottom: 1px solid #25302D;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0F4735, #1E6B52);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      font-size: 10.5px;
+      color: #94A3B8;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .mode-switch-group {
+      display: flex;
+      background: #232B29;
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid #2F3B38;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s;
+    }
+
+    .mode-btn:hover {
+      color: #fff;
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 71, 53, 0.4);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .srs-doc-btn {
+      background: linear-gradient(135deg, #E65100, #FF7A30);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(230,81,0,0.3);
+      transition: transform 0.15s;
+    }
+    .srs-doc-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Main View Area */
+    .view-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    /* SIMULATOR MODE */
+    #simulator-view {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .mobile-frame {
+      width: 395px;
+      height: 830px;
+      background-color: var(--bg-page);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 0 10px #242B29;
+      border-radius: 46px;
+      border: 4px solid #101413;
+    }
+
+    @media (max-width: 480px) {
+      .view-container {
+        padding: 0;
+      }
+      .mobile-frame {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+      }
+    }
+
+    /* Dynamic Status Bar */
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      z-index: 60;
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .status-bar.dark-text { color: #FFFFFF; }
+
+    /* Screen Container */
+    .screen-container {
+      flex: 1;
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--bg-page);
+    }
+    .screen-container::-webkit-scrollbar { display: none; }
+
+    /* Screen Base */
+    .screen {
+      display: none;
+      min-height: 100%;
+      flex-direction: column;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg-page);
+      overflow-y: auto;
+      padding-bottom: 84px;
+      color: var(--text-main);
+    }
+    .screen.active {
+      display: flex;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+
+    /* Bottom App Navigation */
+    .app-bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 50;
+      padding-bottom: 6px;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-item i { font-size: 18px; }
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    /* Screen Inner Headers */
+    .screen-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      flex-shrink: 0;
+    }
+    .screen-header .back-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .screen-header .title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+    }
+
+    /* Common Card & Button UI */
+    .card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      height: 50px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14.5px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 4px 14px rgba(15, 71, 53, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #FFFFFF;
+      height: 50px;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14.5px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 4px 14px rgba(230, 81, 0, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-accent:hover {
+      background: var(--accent-light);
+    }
+
+    .btn-outline {
+      background: #FFFFFF;
+      color: var(--text-main);
+      height: 48px;
+      border-radius: 24px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: #F8FAFC;
+    }
+
+    /* Shimmer Skeleton Animation */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #E8EEEC 25%, #F5F9F7 50%, #E8EEEC 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    /* Floating Quick Jump Switcher */
+    .floating-switcher {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 900;
+    }
+    .switcher-btn {
+      background: #111827;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid #374151;
+      transition: transform 0.2s;
+    }
+    .switcher-btn:hover { transform: scale(1.03); }
+
+    /* Switcher Modal */
+    .switcher-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .switcher-modal.active { display: flex; }
+    .switcher-sheet {
+      background: #171E1C;
+      color: #fff;
+      width: 100%;
+      max-width: 780px;
+      max-height: 85vh;
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      border: 1px solid #2D3A36;
+    }
+    .switcher-sheet::-webkit-scrollbar { width: 6px; }
+    .switcher-sheet::-webkit-scrollbar-thumb { background: #33413E; border-radius: 3px; }
+
+    .category-group-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748B;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+    .switcher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 8px;
+    }
+    .switcher-item {
+      background: #222B29;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #33403C;
+      color: #E2E8E5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .switcher-item:hover, .switcher-item.current {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary-light);
+    }
+
+    /* ALL SCREENS BOARD MODE (FIGMA WIREFRAME OVERVIEW) */
+    #board-view {
+      display: none;
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    .board-header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .board-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+    .board-header p {
+      font-size: 14px;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+
+    .board-row-label {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #A7F3D0;
+      margin: 32px 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #24302C;
+      padding-bottom: 8px;
+    }
+
+    .board-row-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      align-items: start;
+    }
+
+    .board-screen-card {
+      background: #171E1C;
+      border-radius: 20px;
+      padding: 12px;
+      border: 1px solid #2B3834;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .board-screen-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--primary-light);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+
+    .board-screen-preview {
+      width: 100%;
+      height: 480px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-page);
+      border: 3px solid #242D2B;
+      pointer-events: none;
+    }
+
+    .board-screen-preview .screen {
+      display: flex !important;
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden;
+      transform-origin: top left;
+      font-size: 85%;
+    }
+
+    .board-screen-title {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-align: center;
+    }
+
+    .board-screen-num {
+      font-size: 11px;
+      color: #6EE7B7;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    /* SRS MODAL VIEWER */
+    .srs-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .srs-modal.active { display: flex; }
+    .srs-window {
+      background: #FFFFFF;
+      color: #1E293B;
+      width: 100%;
+      max-width: 900px;
+      height: 90vh;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+    .srs-header {
+      background: #0F4735;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .srs-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+      line-height: 1.6;
+    }
+    .srs-body h2 { color: #0F4735; margin: 20px 0 10px; font-size: 20px; }
+    .srs-body h3 { color: #1E293B; margin: 16px 0 8px; font-size: 16px; }
+    .srs-body table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+    .srs-body th, .srs-body td { border: 1px solid #CBD5E1; padding: 8px 12px; text-align: left; }
+    .srs-body th { background: #0F4735; color: #fff; }
+    .srs-body tr:nth-child(even) { background: #F8FAFC; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Global Header -->
+  <header class="top-control-bar">
+    <div class="brand-section">
+      <div class="brand-logo-icon">
+        <i class="fa-solid fa-utensils"></i>
+      </div>
+      <div class="brand-text">
+        <h1>DineStay</h1>
+        <p>Restaurants • Hotels • Experiences</p>
+      </div>
+    </div>
+
+    <div class="mode-switch-group">
+      <button class="mode-btn active" id="btn-mode-simulator" onclick="setAppMode('simulator')">
+        <i class="fa-solid fa-mobile-screen"></i> Phone Simulator
+      </button>
+      <button class="mode-btn" id="btn-mode-board" onclick="setAppMode('board')">
+        <i class="fa-solid fa-table-cells-large"></i> All 35 Screens Board
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <button class="srs-doc-btn" onclick="openSrsModal()">
+        <i class="fa-solid fa-file-pdf"></i> View & Download SRS PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- Viewport Area -->
+  <main class="view-container">
+
+    <!-- 1. PHONE SIMULATOR MODE -->
+    <div id="simulator-view">
+      <div class="mobile-frame">
+        <!-- Dynamic Status Bar -->
+        <div class="status-bar" id="statusBar">
+          <span>9:41</span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <i class="fa-solid fa-signal" style="font-size:11px;"></i>
+            <i class="fa-solid fa-wifi" style="font-size:11px;"></i>
+            <i class="fa-solid fa-battery-full" style="font-size:12px;"></i>
+          </div>
+        </div>
+
+        <!-- Scrollable Active Screens Container -->
+        <div class="screen-container">
+
+          <!-- ================= ROW 1 SCREENS ================= -->
+
+          <!-- 1. SPLASH SCREEN -->
+          <div class="screen active" id="screen-splash" style="background:#0F4735; color:#fff; justify-content:space-between; align-items:center; text-align:center; padding:50px 24px 30px;">
+            <div></div>
+            <div>
+              <div style="width:96px; height:96px; border-radius:28px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; border:1px solid rgba(255,255,255,0.25); box-shadow:0 15px 35px rgba(0,0,0,0.25);">
+                <div style="width:62px; height:62px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:28px;">
+                  <i class="fa-solid fa-utensils"></i>
+                </div>
+              </div>
+              <h1 style="font-size:38px; font-weight:800; letter-spacing:-0.5px;">DineStay</h1>
+              <p style="font-size:12.5px; color:rgba(255,255,255,0.8); margin-top:6px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600;">Restaurants • Hotels • Experiences</p>
+            </div>
+            
+            <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:20px;">
+              <div style="width:180px; height:180px; border-radius:50%; overflow:hidden; border:4px solid rgba(255,255,255,0.2); box-shadow:0 15px 35px rgba(0,0,0,0.3);">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Gourmet Food">
+              </div>
+              <button class="btn-accent" onclick="showScreen('screen-onb1')" style="max-width:280px; height:52px; font-size:15px;">
+                Explore DineStay <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. ONBOARDING 1 -->
+          <div class="screen" id="screen-onb1" style="padding:24px; text-align:center; justify-content:space-between;">
+            <div style="display:flex; justify-content:flex-end;">
+              <span onclick="showScreen('screen-login')" style="color:var(--text-muted); font-size:14px; font-weight:600; cursor:pointer;">Skip</span>
+            </div>
+            <div style="padding:10px 0;">
+              <div style="width:230px; height:230px; margin:0 auto 24px; border-radius:50%; overflow:hidden; border:6px solid #E8F5EE; box-shadow:0 12px 28px rgba(15,71,53,0.1);">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=450&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Restaurants">
+              </div>
+              <h2 style="font-size:24px; font-weight:800; color:var(--text-main); line-height:1.2;">Discover Great Restaurants</h2>
+              <p style="font-size:14px; color:var(--text-muted); margin-top:10px; line-height:1.5;">Find, explore and reserve tables at top restaurants near you seamlessly.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:center; gap:6px;">
+                <span style="width:24px; height:6px; border-radius:3px; background:var(--primary);"></span>
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+              </div>
+              <button class="btn-primary" onclick="showScreen('screen-onb2')">Next</button>
+            </div>
+          </div>
+
+          <!-- 3. ONBOARDING 2 -->
+          <div class="screen" id="screen-onb2" style="padding:24px; text-align:center; justify-content:space-between;">
+            <div style="display:flex; justify-content:flex-end;">
+              <span onclick="showScreen('screen-login')" style="color:var(--text-muted); font-size:14px; font-weight:600; cursor:pointer;">Skip</span>
+            </div>
+            <div style="padding:10px 0;">
+              <div style="width:230px; height:230px; margin:0 auto 24px; border-radius:50%; overflow:hidden; border:6px solid #E8F5EE; box-shadow:0 12px 28px rgba(15,71,53,0.1);">
+                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=450&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Hotels">
+              </div>
+              <h2 style="font-size:24px; font-weight:800; color:var(--text-main); line-height:1.2;">Book Comfortable Hotel Stays</h2>
+              <p style="font-size:14px; color:var(--text-muted); margin-top:10px; line-height:1.5;">Explore premier hotels, compare rooms, and book instantly with verified reviews.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:center; gap:6px;">
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+                <span style="width:24px; height:6px; border-radius:3px; background:var(--primary);"></span>
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+              </div>
+              <button class="btn-primary" onclick="showScreen('screen-onb3')">Next</button>
+            </div>
+          </div>
+
+          <!-- 4. ONBOARDING 3 -->
+          <div class="screen" id="screen-onb3" style="padding:24px; text-align:center; justify-content:space-between;">
+            <div style="display:flex; justify-content:flex-end;">
+              <span onclick="showScreen('screen-login')" style="color:var(--text-muted); font-size:14px; font-weight:600; cursor:pointer;">Skip</span>
+            </div>
+            <div style="padding:10px 0;">
+              <div style="width:230px; height:230px; margin:0 auto 24px; border-radius:50%; overflow:hidden; border:6px solid #FFF3E0; box-shadow:0 12px 28px rgba(230,81,0,0.1); background:#FFF8F0; display:flex; align-items:center; justify-content:center;">
+                <i class="fa-solid fa-gift" style="font-size:80px; color:var(--accent);"></i>
+              </div>
+              <h2 style="font-size:24px; font-weight:800; color:var(--text-main); line-height:1.2;">Best Offers Every Time</h2>
+              <p style="font-size:14px; color:var(--text-muted); margin-top:10px; line-height:1.5;">Get exclusive deals, seasonal discounts, and special reward vouchers on every booking.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:center; gap:6px;">
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+                <span style="width:6px; height:6px; border-radius:3px; background:#CBD5E1;"></span>
+                <span style="width:24px; height:6px; border-radius:3px; background:var(--primary);"></span>
+              </div>
+              <button class="btn-primary" onclick="showScreen('screen-login')">Get Started</button>
+            </div>
+          </div>
+
+          <!-- 5. LOGIN -->
+          <div class="screen" id="screen-login" style="padding:24px;">
+            <div class="screen-header" style="padding:0; margin-bottom:20px;">
+              <div class="back-btn" onclick="showScreen('screen-onb3')"><i class="fa-solid fa-chevron-left"></i></div>
+            </div>
+            <h2 style="font-size:26px; font-weight:800; color:var(--text-main);">Welcome Back</h2>
+            <p style="font-size:14px; color:var(--text-muted); margin-top:4px; margin-bottom:24px;">Login to continue to DineStay</p>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div>
+                <label style="font-size:12px; font-weight:700; color:var(--text-main);">Email or Mobile Number</label>
+                <input type="text" value="sneha@example.com" style="width:100%; height:48px; border-radius:14px; border:1px solid var(--border-color); padding:0 14px; margin-top:6px; font-size:14px; outline:none; background:#fff;">
+              </div>
+              <div>
+                <label style="font-size:12px; font-weight:700; color:var(--text-main);">Password</label>
+                <input type="password" value="••••••••" style="width:100%; height:48px; border-radius:14px; border:1px solid var(--border-color); padding:0 14px; margin-top:6px; font-size:14px; outline:none; background:#fff;">
+              </div>
+              <div style="text-align:right;">
+                <span style="font-size:12.5px; font-weight:600; color:var(--primary); cursor:pointer;">Forgot Password?</span>
+              </div>
+              <button class="btn-primary" onclick="showScreen('screen-otp')" style="margin-top:6px;">Login</button>
+            </div>
+
+            <div style="text-align:center; margin:22px 0 16px; font-size:12px; color:var(--text-muted); position:relative;">
+              <span style="background:var(--bg-page); padding:0 12px; position:relative; z-index:1; font-weight:600;">OR</span>
+              <div style="position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border-color);"></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <button class="btn-outline"><i class="fa-brands fa-google" style="margin-right:10px; color:#DB4437;"></i> Continue with Google</button>
+              <button class="btn-outline"><i class="fa-brands fa-apple" style="margin-right:10px;"></i> Continue with Apple</button>
+            </div>
+
+            <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-top:26px;">
+              Don't have an account? <span onclick="showScreen('screen-signup')" style="font-weight:700; color:var(--primary); cursor:pointer;">Sign Up</span>
+            </p>
+          </div>
+
+          <!-- 6. SIGN UP -->
+          <div class="screen" id="screen-signup" style="padding:24px;">
+            <div class="screen-header" style="padding:0; margin-bottom:18px;">
+              <div class="back-btn" onclick="showScreen('screen-login')"><i class="fa-solid fa-chevron-left"></i></div>
+            </div>
+            <h2 style="font-size:26px; font-weight:800; color:var(--text-main);">Create Account</h2>
+
+            <!-- Customer / Business Pill Toggle -->
+            <div style="display:flex; background:#E2E8E5; border-radius:14px; padding:4px; margin:16px 0 20px;">
+              <div style="flex:1; text-align:center; padding:8px 0; border-radius:11px; font-size:13px; font-weight:700; background:var(--primary); color:#fff; cursor:pointer;">Customer</div>
+              <div style="flex:1; text-align:center; padding:8px 0; border-radius:11px; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer;">Business</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div>
+                <label style="font-size:12px; font-weight:700;">Full Name</label>
+                <input type="text" placeholder="Sneha Patel" style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 14px; margin-top:5px; font-size:14px; background:#fff;">
+              </div>
+              <div>
+                <label style="font-size:12px; font-weight:700;">Mobile Number</label>
+                <input type="text" placeholder="+91 98765-43210" style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 14px; margin-top:5px; font-size:14px; background:#fff;">
+              </div>
+              <div>
+                <label style="font-size:12px; font-weight:700;">Email Address</label>
+                <input type="email" placeholder="sneha@example.com" style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 14px; margin-top:5px; font-size:14px; background:#fff;">
+              </div>
+              <div>
+                <label style="font-size:12px; font-weight:700;">Password</label>
+                <input type="password" placeholder="••••••••" style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 14px; margin-top:5px; font-size:14px; background:#fff;">
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; margin:6px 0;">
+                <input type="checkbox" checked id="termsCheck" style="accent-color:var(--primary);">
+                <label for="termsCheck" style="font-size:12px; color:var(--text-muted);">I agree to the <span style="color:var(--primary); font-weight:600;">Terms & Conditions</span></label>
+              </div>
+              <button class="btn-primary" onclick="showScreen('screen-otp')" style="margin-top:6px;">Sign Up</button>
+            </div>
+            <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-top:18px;">
+              Already have an account? <span onclick="showScreen('screen-login')" style="font-weight:700; color:var(--primary); cursor:pointer;">Login</span>
+            </p>
+          </div>
+
+          <!-- 7. OTP VERIFICATION -->
+          <div class="screen" id="screen-otp" style="padding:24px; text-align:center;">
+            <div class="screen-header" style="padding:0; margin-bottom:20px;">
+              <div class="back-btn" onclick="showScreen('screen-login')"><i class="fa-solid fa-chevron-left"></i></div>
+            </div>
+            <div style="width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:#E8F5EE; display:flex; align-items:center; justify-content:center;">
+              <i class="fa-solid fa-shield-halved" style="font-size:32px; color:var(--primary);"></i>
+            </div>
+            <h2 style="font-size:24px; font-weight:800; color:var(--text-main);">Verify OTP</h2>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:6px;">We have sent a 6-digit code to<br><strong style="color:var(--text-main);">+91 98765-43210</strong></p>
+
+            <div style="display:flex; justify-content:center; gap:8px; margin:30px 0;">
+              <input type="text" maxlength="1" value="4" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+              <input type="text" maxlength="1" value="8" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+              <input type="text" maxlength="1" value="2" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+              <input type="text" maxlength="1" value="9" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+              <input type="text" maxlength="1" value="1" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+              <input type="text" maxlength="1" value="0" style="width:42px; height:50px; text-align:center; font-size:20px; font-weight:800; border-radius:12px; border:1px solid var(--border-color); background:#fff;">
+            </div>
+
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:24px;">Resend OTP in <span style="color:var(--primary); font-weight:700;">00:25</span></p>
+            <button class="btn-primary" onclick="showScreen('screen-home')">Verify</button>
+          </div>
+
+          <!-- 8. HOME / EXPLORE SCREEN -->
+          <div class="screen" id="screen-home" style="padding:16px 18px;">
+            <!-- Top Location Header -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-location-dot" style="color:var(--accent); font-size:18px;"></i>
+                <div>
+                  <div style="font-size:14px; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:4px;">
+                    Chandigarh <i class="fa-solid fa-chevron-down" style="font-size:10px; color:var(--text-muted);"></i>
+                  </div>
+                  <div style="font-size:11px; color:var(--text-muted);">Sector 34, Chandigarh</div>
+                </div>
+              </div>
+              <div onclick="showScreen('screen-notif')" style="width:38px; height:38px; border-radius:50%; background:#fff; border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative;">
+                <i class="fa-regular fa-bell" style="font-size:16px;"></i>
+                <span style="position:absolute; top:7px; right:8px; width:7px; height:7px; background:var(--accent); border-radius:50%;"></span>
+              </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div onclick="showScreen('screen-search')" style="height:48px; background:#fff; border-radius:24px; border:1px solid var(--border-color); display:flex; align-items:center; padding:0 16px; gap:10px; cursor:pointer; margin-bottom:18px;">
+              <i class="fa-solid fa-magnifying-glass" style="color:var(--text-muted); font-size:14px;"></i>
+              <span style="font-size:13px; color:var(--text-muted);">Search restaurants, hotels...</span>
+            </div>
+
+            <!-- 4 Quick Category Circles -->
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+              <div onclick="showScreen('screen-search')" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
+                <div style="width:56px; height:56px; border-radius:18px; background:#E8F5EE; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:20px;">
+                  <i class="fa-solid fa-utensils"></i>
+                </div>
+                <span style="font-size:12px; font-weight:700;">Restaurants</span>
+              </div>
+              <div onclick="showScreen('screen-hotels')" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
+                <div style="width:56px; height:56px; border-radius:18px; background:#E3F2FD; display:flex; align-items:center; justify-content:center; color:#1976D2; font-size:20px;">
+                  <i class="fa-solid fa-hotel"></i>
+                </div>
+                <span style="font-size:12px; font-weight:700;">Hotels</span>
+              </div>
+              <div onclick="showScreen('screen-party-halls')" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
+                <div style="width:56px; height:56px; border-radius:18px; background:#FFF3E0; display:flex; align-items:center; justify-content:center; color:#F57C00; font-size:20px;">
+                  <i class="fa-solid fa-champagne-glasses"></i>
+                </div>
+                <span style="font-size:12px; font-weight:700;">Party Halls</span>
+              </div>
+              <div onclick="showScreen('screen-offers')" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
+                <div style="width:56px; height:56px; border-radius:18px; background:#FFEBEE; display:flex; align-items:center; justify-content:center; color:#D32F2F; font-size:20px;">
+                  <i class="fa-solid fa-tag"></i>
+                </div>
+                <span style="font-size:12px; font-weight:700;">Offers</span>
+              </div>
+            </div>
+
+            <!-- Promo Banner -->
+            <div onclick="showScreen('screen-offers')" style="position:relative; border-radius:20px; overflow:hidden; margin-bottom:22px; cursor:pointer; height:130px; box-shadow:0 8px 20px rgba(0,0,0,0.12);">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Promo">
+              <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(15,71,53,0.95) 0%, rgba(15,71,53,0.6) 100%); display:flex; flex-direction:column; justify-content:center; padding:0 20px; color:#fff;">
+                <span style="font-size:11px; font-weight:800; letter-spacing:1px; color:#A7F3D0; text-transform:uppercase;">Special Offer</span>
+                <h3 style="font-size:20px; font-weight:800; margin:4px 0 2px;">FLAT 20% OFF</h3>
+                <p style="font-size:12px; opacity:0.9;">on Table Reservations</p>
+                <div style="margin-top:8px;">
+                  <span style="background:var(--accent); color:#fff; font-size:11px; font-weight:800; padding:5px 12px; border-radius:12px;">Book Now</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Popular Restaurants Section Header -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 style="font-size:16px; font-weight:800; color:var(--text-main);">Popular Restaurants</h3>
+              <span onclick="showScreen('screen-search')" style="font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;">View All</span>
+            </div>
+
+            <!-- Restaurant Card -->
+            <div class="card" onclick="showScreen('screen-res-details')" style="cursor:pointer; display:flex; gap:14px; margin-bottom:12px;">
+              <div style="width:85px; height:85px; border-radius:14px; overflow:hidden; flex-shrink:0;">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=300&q=80" style="width:100%; height:100%; object-fit:cover;" alt="The Brew Estate">
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <h4 style="font-size:15px; font-weight:700;">The Brew Estate</h4>
+                  <span style="background:var(--badge-bg); color:var(--badge-text); font-size:11px; font-weight:800; padding:2px 6px; border-radius:6px;">★ 4.5 <span style="font-weight:500;">(1.2k)</span></span>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Continental • North Indian</p>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;"><i class="fa-solid fa-location-dot" style="font-size:10px;"></i> Sector 26, Chandigarh</p>
+                <p style="font-size:12.5px; font-weight:700; color:var(--text-main); margin-top:4px;">₹1,200 for two</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. SEARCH & FILTERS -->
+          <div class="screen" id="screen-search" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="flex:1; margin:0 10px; height:44px; background:#fff; border-radius:22px; border:1px solid var(--border-color); display:flex; align-items:center; padding:0 14px; gap:8px;">
+                <i class="fa-solid fa-magnifying-glass" style="color:var(--text-muted); font-size:13px;"></i>
+                <input type="text" value="Restaurants in Chandigarh" style="border:none; outline:none; font-size:13px; font-weight:600; width:100%;">
+              </div>
+              <div class="back-btn" onclick="showScreen('screen-no-results')"><i class="fa-solid fa-sliders"></i></div>
+            </div>
+
+            <!-- Filter Chips -->
+            <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px;">
+              <span style="padding:6px 12px; background:var(--primary); color:#fff; border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Cuisine <i class="fa-solid fa-chevron-down" style="font-size:9px;"></i></span>
+              <span style="padding:6px 12px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Rating ▼</span>
+              <span style="padding:6px 12px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Offers ▼</span>
+              <span style="padding:6px 12px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Sort ▼</span>
+            </div>
+
+            <p style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:12px;">126 restaurants found</p>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Item 1: Virgin Courtyard -->
+              <div class="card" onclick="showScreen('screen-res-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300&q=80" style="width:85px; height:85px; border-radius:14px; object-fit:cover;" alt="Virgin Courtyard">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14px; font-weight:700;">Virgin Courtyard</h4>
+                    <span style="font-size:11px; font-weight:800; color:var(--primary);">★ 4.6 (1.5k)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Italian • Continental</p>
+                  <p style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Sector 7, Chandigarh</p>
+                  <p style="font-size:12px; font-weight:700; margin-top:4px;">₹1,600 for two</p>
+                </div>
+              </div>
+
+              <!-- Item 2: Barbeque Nation -->
+              <div class="card" onclick="showScreen('screen-res-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=80" style="width:85px; height:85px; border-radius:14px; object-fit:cover;" alt="Barbeque Nation">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14px; font-weight:700;">Barbeque Nation</h4>
+                    <span style="font-size:11px; font-weight:800; color:var(--primary);">★ 4.4 (3.2k)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Barbeque • North Indian</p>
+                  <p style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Sector 26, Chandigarh</p>
+                  <p style="font-size:12px; font-weight:700; margin-top:4px;">₹1,400 for two</p>
+                </div>
+              </div>
+
+              <!-- Item 3: Nik Baker's -->
+              <div class="card" onclick="showScreen('screen-res-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=300&q=80" style="width:85px; height:85px; border-radius:14px; object-fit:cover;" alt="Nik Baker's">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14px; font-weight:700;">Nik Baker's</h4>
+                    <span style="font-size:11px; font-weight:800; color:var(--primary);">★ 4.5 (2.8k)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Bakery • Cafe • Continental</p>
+                  <p style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Sector 35, Chandigarh</p>
+                  <p style="font-size:12px; font-weight:700; margin-top:4px;">₹800 for two</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= ROW 2 SCREENS ================= -->
+
+          <!-- 10. RESTAURANT DETAILS -->
+          <div class="screen" id="screen-res-details" style="padding-bottom:95px;">
+            <div style="position:relative; height:210px; background:#222;">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" style="width:100%; height:100%; object-fit:cover;" alt="The Brew Estate">
+              <div style="position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between;">
+                <div class="back-btn" onclick="showScreen('screen-home')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-chevron-left"></i></div>
+                <div style="display:flex; gap:8px;">
+                  <div class="back-btn" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-share-nodes"></i></div>
+                  <div class="back-btn" onclick="showScreen('screen-favorites')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-heart" style="color:var(--accent);"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px 20px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <h2 style="font-size:22px; font-weight:800;">The Brew Estate</h2>
+                  <p style="font-size:13px; color:var(--text-muted); margin-top:2px;">Continental • North Indian • Cafe</p>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                    <i class="fa-solid fa-location-dot" style="color:var(--accent);"></i> 2.5 km away • <span style="color:#2E7D32; font-weight:700;">Open now</span>
+                  </p>
+                </div>
+                <div style="background:var(--badge-bg); color:var(--badge-text); padding:4px 8px; border-radius:8px; font-size:13px; font-weight:800;">
+                  ★ 4.5 <span style="font-size:11px; font-weight:500;">(1.2k)</span>
+                </div>
+              </div>
+
+              <!-- Quick Action Row -->
+              <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin:18px 0;">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--text-muted);">
+                  <div style="width:42px; height:42px; border-radius:50%; border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; background:#fff;"><i class="fa-solid fa-phone"></i></div>
+                  Call
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--text-muted);">
+                  <div style="width:42px; height:42px; border-radius:50%; border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; background:#fff;"><i class="fa-solid fa-diamond-turn-right"></i></div>
+                  Directions
+                </div>
+                <div onclick="showScreen('screen-menu')" style="display:flex; flex-direction:column; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--primary); cursor:pointer;">
+                  <div style="width:42px; height:42px; border-radius:50%; border:1px solid var(--primary); display:flex; align-items:center; justify-content:center; background:var(--badge-bg);"><i class="fa-solid fa-book-open"></i></div>
+                  Menu
+                </div>
+                <div onclick="showScreen('screen-favorites')" style="display:flex; flex-direction:column; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--text-muted); cursor:pointer;">
+                  <div style="width:42px; height:42px; border-radius:50%; border:1px solid var(--border-color); display:flex; align-items:center; justify-content:center; background:#fff;"><i class="fa-regular fa-bookmark"></i></div>
+                  Save
+                </div>
+              </div>
+
+              <!-- Tabs -->
+              <div style="display:flex; border-bottom:1px solid var(--border-color); margin-bottom:14px;">
+                <div style="padding:8px 12px; font-size:13px; font-weight:700; color:var(--primary); border-bottom:2px solid var(--primary);">Overview</div>
+                <div onclick="showScreen('screen-menu')" style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer;">Menu</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Photos</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Reviews</div>
+              </div>
+
+              <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">
+                A premier craft brewery and dining venue offering world-class brews, exquisite continental delicacies, and warm vibrant vibes in Sector 26, Chandigarh.
+              </p>
+            </div>
+
+            <div style="position:absolute; bottom:16px; left:20px; right:20px;">
+              <button class="btn-primary" onclick="showScreen('screen-table-res')">Reserve a Table</button>
+            </div>
+          </div>
+
+          <!-- 11. RESTAURANT MENU -->
+          <div class="screen" id="screen-menu" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-res-details')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">The Brew Estate</h3>
+              <div class="back-btn"><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+
+            <!-- Categories Tabs -->
+            <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:14px;">
+              <span style="padding:6px 14px; background:var(--primary); color:#fff; border-radius:18px; font-size:12px; font-weight:700;">Recommended</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:18px; font-size:12px; font-weight:600;">Starters</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:18px; font-size:12px; font-weight:600;">Mains</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:18px; font-size:12px; font-weight:600;">Desserts</span>
+            </div>
+
+            <p style="font-size:12px; font-weight:800; color:var(--text-muted); margin-bottom:10px;">Recommended</p>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Paneer Tikka -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Paneer Tikka">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="color:#2E7D32; font-size:10px;"><i class="fa-solid fa-circle"></i></span>
+                      <h4 style="font-size:14.5px; font-weight:700;">Paneer Tikka</h4>
+                    </div>
+                    <p style="font-size:14px; font-weight:800; color:var(--text-main); margin-top:2px;">₹320</p>
+                    <span style="background:#FFF3E0; color:#E65100; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px;">Popular</span>
+                  </div>
+                </div>
+                <button style="width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; border:none; font-size:16px; cursor:pointer;">+</button>
+              </div>
+
+              <!-- Butter Chicken -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Butter Chicken">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="color:#C62828; font-size:10px;"><i class="fa-solid fa-caret-up"></i></span>
+                      <h4 style="font-size:14.5px; font-weight:700;">Butter Chicken</h4>
+                    </div>
+                    <p style="font-size:14px; font-weight:800; color:var(--text-main); margin-top:2px;">₹420</p>
+                    <span style="background:#E8F5EE; color:var(--primary); font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px;">Best Seller</span>
+                  </div>
+                </div>
+                <button style="width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; border:none; font-size:16px; cursor:pointer;">+</button>
+              </div>
+
+              <!-- Veg Biryani -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Veg Biryani">
+                  <div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span style="color:#2E7D32; font-size:10px;"><i class="fa-solid fa-circle"></i></span>
+                      <h4 style="font-size:14.5px; font-weight:700;">Veg Biryani</h4>
+                    </div>
+                    <p style="font-size:14px; font-weight:800; color:var(--text-main); margin-top:2px;">₹260</p>
+                  </div>
+                </div>
+                <button style="width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; border:none; font-size:16px; cursor:pointer;">+</button>
+              </div>
+            </div>
+
+            <div style="margin-top:20px;">
+              <button class="btn-primary" onclick="showScreen('screen-table-res')">Proceed to Reserve Table</button>
+            </div>
+          </div>
+
+          <!-- 12. TABLE RESERVATION -->
+          <div class="screen" id="screen-table-res" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-res-details')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Table Reservation</h3>
+              <div></div>
+            </div>
+
+            <label style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:8px; display:block;">Select Date & Time</label>
+            <div style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto;">
+              <div style="padding:10px 14px; background:var(--primary); color:#fff; border-radius:14px; text-align:center; min-width:68px;">
+                <div style="font-size:11px; font-weight:600;">Today</div>
+                <div style="font-size:15px; font-weight:800;">15 Apr</div>
+              </div>
+              <div style="padding:10px 14px; background:#fff; border:1px solid var(--border-color); border-radius:14px; text-align:center; min-width:68px;">
+                <div style="font-size:11px; font-weight:600; color:var(--text-muted);">Wed</div>
+                <div style="font-size:15px; font-weight:800;">16 Apr</div>
+              </div>
+              <div style="padding:10px 14px; background:#fff; border:1px solid var(--border-color); border-radius:14px; text-align:center; min-width:68px;">
+                <div style="font-size:11px; font-weight:600; color:var(--text-muted);">Thu</div>
+                <div style="font-size:15px; font-weight:800;">17 Apr</div>
+              </div>
+              <div style="padding:10px 14px; background:#fff; border:1px solid var(--border-color); border-radius:14px; text-align:center; min-width:68px;">
+                <div style="font-size:11px; font-weight:600; color:var(--text-muted);">Fri</div>
+                <div style="font-size:15px; font-weight:800;">18 Apr</div>
+              </div>
+            </div>
+
+            <!-- Time Slots -->
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:18px;">
+              <div style="padding:9px; background:#fff; border:1px solid var(--border-color); border-radius:10px; text-align:center; font-size:12px; font-weight:700;">12:00 PM</div>
+              <div style="padding:9px; background:#fff; border:1px solid var(--border-color); border-radius:10px; text-align:center; font-size:12px; font-weight:700;">1:00 PM</div>
+              <div style="padding:9px; background:var(--accent); color:#fff; border-radius:10px; text-align:center; font-size:12px; font-weight:700;">7:00 PM</div>
+              <div style="padding:9px; background:#fff; border:1px solid var(--border-color); border-radius:10px; text-align:center; font-size:12px; font-weight:700;">8:00 PM</div>
+              <div style="padding:9px; background:#fff; border:1px solid var(--border-color); border-radius:10px; text-align:center; font-size:12px; font-weight:700;">9:00 PM</div>
+            </div>
+
+            <label style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:8px; display:block;">Number of Guests</label>
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:18px; background:#fff; padding:10px 16px; border-radius:14px; border:1px solid var(--border-color); width:max-content;">
+              <button style="width:30px; height:30px; border-radius:50%; border:1px solid var(--border-color); background:#fff; font-size:16px; cursor:pointer;">-</button>
+              <span style="font-size:16px; font-weight:800;">2</span>
+              <button style="width:30px; height:30px; border-radius:50%; background:var(--primary); color:#fff; border:none; font-size:16px; cursor:pointer;">+</button>
+            </div>
+
+            <label style="font-size:13px; font-weight:800; color:var(--text-main); margin-bottom:6px; display:block;">Special Requests (Optional)</label>
+            <input type="text" value="Window seat, if available" style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 12px; font-size:13px; outline:none; background:#fff; margin-bottom:20px;">
+
+            <button class="btn-primary" onclick="showScreen('screen-res-review')">Continue</button>
+          </div>
+
+          <!-- 13. REVIEW RESERVATION -->
+          <div class="screen" id="screen-res-review" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-table-res')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Review Your Reservation</h3>
+              <div></div>
+            </div>
+
+            <div class="card" style="margin-bottom:16px; display:flex; gap:12px; align-items:center;">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" style="width:70px; height:70px; border-radius:12px; object-fit:cover;" alt="The Brew Estate">
+              <div>
+                <h4 style="font-size:15px; font-weight:800;">The Brew Estate</h4>
+                <p style="font-size:12px; color:var(--text-muted);">Sector 26, Chandigarh</p>
+                <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Continental • North Indian</p>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom:20px; display:flex; flex-direction:column; gap:12px; font-size:13px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-regular fa-calendar" style="color:var(--primary); width:18px;"></i>
+                <span>Tue, 15 Apr 2025</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-regular fa-clock" style="color:var(--primary); width:18px;"></i>
+                <span>7:00 PM</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-users" style="color:var(--primary); width:18px;"></i>
+                <span>2 Guests</span>
+              </div>
+              <div style="display:flex; align-items:flex-start; gap:10px;">
+                <i class="fa-regular fa-comment-dots" style="color:var(--primary); width:18px; margin-top:2px;"></i>
+                <div>
+                  <span style="font-weight:700;">Special Requests:</span>
+                  <p style="color:var(--text-muted); font-size:12px; margin-top:2px;">Window seat, if available</p>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-accent" onclick="showScreen('screen-confirmed')">Confirm Reservation</button>
+          </div>
+
+          <!-- 14. PARTY HALLS LIST -->
+          <div class="screen" id="screen-party-halls" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Party Halls in Chandigarh</h3>
+              <div class="back-btn"><i class="fa-solid fa-sliders"></i></div>
+            </div>
+
+            <p style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:12px;">12 party halls found</p>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <!-- The Grand Hall -->
+              <div class="card" onclick="showScreen('screen-party-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=300&q=80" style="width:90px; height:90px; border-radius:14px; object-fit:cover;" alt="The Grand Hall">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14.5px; font-weight:700;">The Grand Hall</h4>
+                    <span style="color:var(--primary); font-size:11.5px; font-weight:800;">★ 4.6 (1.2k)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Sector 26, Chandigarh</p>
+                  <p style="font-size:13.5px; font-weight:800; color:var(--accent); margin-top:6px;">₹25,000 onwards</p>
+                </div>
+              </div>
+
+              <!-- Royal Banquet -->
+              <div class="card" onclick="showScreen('screen-party-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=300&q=80" style="width:90px; height:90px; border-radius:14px; object-fit:cover;" alt="Royal Banquet">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14.5px; font-weight:700;">Royal Banquet</h4>
+                    <span style="color:var(--primary); font-size:11.5px; font-weight:800;">★ 4.3 (850)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Sector 35, Chandigarh</p>
+                  <p style="font-size:13.5px; font-weight:800; color:var(--accent); margin-top:6px;">₹18,000 onwards</p>
+                </div>
+              </div>
+
+              <!-- Celebration Palace -->
+              <div class="card" onclick="showScreen('screen-party-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=300&q=80" style="width:90px; height:90px; border-radius:14px; object-fit:cover;" alt="Celebration Palace">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14.5px; font-weight:700;">Celebration Palace</h4>
+                    <span style="color:var(--primary); font-size:11.5px; font-weight:800;">★ 4.4 (1.1k)</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Sector 7, Chandigarh</p>
+                  <p style="font-size:13.5px; font-weight:800; color:var(--accent); margin-top:6px;">₹30,000 onwards</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 15. PARTY HALL DETAILS -->
+          <div class="screen" id="screen-party-details" style="padding-bottom:95px;">
+            <div style="position:relative; height:210px; background:#222;">
+              <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80" style="width:100%; height:100%; object-fit:cover;" alt="The Grand Hall">
+              <div style="position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between;">
+                <div class="back-btn" onclick="showScreen('screen-party-halls')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-chevron-left"></i></div>
+                <div style="display:flex; gap:8px;">
+                  <div class="back-btn" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-share-nodes"></i></div>
+                  <div class="back-btn" onclick="showScreen('screen-favorites')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-heart" style="color:var(--accent);"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px 20px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <h2 style="font-size:22px; font-weight:800;">The Grand Hall</h2>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Sector 26, Chandigarh</p>
+                </div>
+                <div style="background:var(--badge-bg); color:var(--badge-text); padding:4px 8px; border-radius:8px; font-size:13px; font-weight:800;">
+                  ★ 4.5 <span style="font-size:11px; font-weight:500;">(1.2k)</span>
+                </div>
+              </div>
+
+              <!-- Tags -->
+              <div style="display:flex; gap:6px; flex-wrap:wrap; margin:12px 0;">
+                <span style="background:#F1F5F9; font-size:11px; font-weight:600; padding:4px 8px; border-radius:6px;">Weddings</span>
+                <span style="background:#F1F5F9; font-size:11px; font-weight:600; padding:4px 8px; border-radius:6px;">Birthday</span>
+                <span style="background:#F1F5F9; font-size:11px; font-weight:600; padding:4px 8px; border-radius:6px;">Corporate</span>
+                <span style="background:#F1F5F9; font-size:11px; font-weight:600; padding:4px 8px; border-radius:6px;">Party</span>
+              </div>
+
+              <!-- Tabs -->
+              <div style="display:flex; border-bottom:1px solid var(--border-color); margin-bottom:14px;">
+                <div style="padding:8px 12px; font-size:13px; font-weight:700; color:var(--primary); border-bottom:2px solid var(--primary);">Overview</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Packages</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Photos</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Reviews</div>
+              </div>
+
+              <!-- Specs -->
+              <div class="card" style="margin-bottom:14px; display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
+                <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Capacity:</span> <strong>50 – 300 guests</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Parking:</span> <strong>Valet Available</strong></div>
+                <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Catering:</span> <strong>In-house & External Allowed</strong></div>
+              </div>
+            </div>
+
+            <div style="position:absolute; bottom:16px; left:20px; right:20px;">
+              <button class="btn-accent" onclick="showScreen('screen-table-res')">Book Party Hall</button>
+            </div>
+          </div>
+
+          <!-- 16. HOTELS IN CHANDIGARH -->
+          <div class="screen" id="screen-hotels" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Hotels in Chandigarh</h3>
+              <div class="back-btn"><i class="fa-solid fa-sliders"></i></div>
+            </div>
+
+            <!-- Date & Guests Pill Bar -->
+            <div style="background:#fff; border:1px solid var(--border-color); border-radius:14px; padding:10px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700;">
+              <div><i class="fa-regular fa-calendar" style="color:var(--primary); margin-right:6px;"></i> 15 Apr - 16 Apr</div>
+              <div style="color:var(--border-color);">|</div>
+              <div><i class="fa-solid fa-user-group" style="color:var(--primary); margin-right:6px;"></i> 2 Guests, 1 Room</div>
+            </div>
+
+            <!-- Filter Chips -->
+            <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:12px;">
+              <span style="padding:6px 12px; background:var(--primary); color:#fff; border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Price ▼</span>
+              <span style="padding:6px 12px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Rating ▼</span>
+              <span style="padding:6px 12px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600; white-space:nowrap;">Amenities ▼</span>
+            </div>
+
+            <p style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:12px;">86 hotels found</p>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <!-- Hyatt Regency -->
+              <div class="card" onclick="showScreen('screen-hotel-details')" style="cursor:pointer; padding:12px;">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80" style="width:100%; height:125px; border-radius:12px; object-fit:cover;" alt="Hyatt Regency">
+                <div style="margin-top:10px;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:15px; font-weight:700;">Hyatt Regency Chandigarh</h4>
+                    <span style="color:var(--primary); font-size:12px; font-weight:800;">★ 4.6</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Sector 17, Chandigarh</p>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px;">
+                    <div style="font-size:11px; color:var(--text-muted);">Free WiFi • Pool • Breakfast</div>
+                    <div style="font-size:16px; font-weight:800; color:var(--primary);">₹9,000 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Taj Chandigarh -->
+              <div class="card" onclick="showScreen('screen-hotel-details')" style="cursor:pointer; padding:12px;">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&q=80" style="width:100%; height:125px; border-radius:12px; object-fit:cover;" alt="Taj Chandigarh">
+                <div style="margin-top:10px;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:15px; font-weight:700;">Taj Chandigarh</h4>
+                    <span style="color:var(--primary); font-size:12px; font-weight:800;">★ 4.5</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Sector 17, Chandigarh</p>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px;">
+                    <div style="font-size:11px; color:var(--text-muted);">Free WiFi • Pool • Spa</div>
+                    <div style="font-size:16px; font-weight:800; color:var(--primary);">₹8,500 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lemon Tree -->
+              <div class="card" onclick="showScreen('screen-hotel-details')" style="cursor:pointer; padding:12px;">
+                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500&q=80" style="width:100%; height:125px; border-radius:12px; object-fit:cover;" alt="Lemon Tree">
+                <div style="margin-top:10px;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:15px; font-weight:700;">Lemon Tree Hotel</h4>
+                    <span style="color:var(--primary); font-size:12px; font-weight:800;">★ 4.3</span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Industrial Area, Chandigarh</p>
+                  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px;">
+                    <div style="font-size:11px; color:var(--text-muted);">Free WiFi • Breakfast</div>
+                    <div style="font-size:16px; font-weight:800; color:var(--primary);">₹12,000 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 17. HOTEL DETAILS -->
+          <div class="screen" id="screen-hotel-details" style="padding-bottom:95px;">
+            <div style="position:relative; height:220px; background:#222;">
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Hyatt Regency">
+              <div style="position:absolute; top:16px; left:16px; right:16px; display:flex; justify-content:space-between;">
+                <div class="back-btn" onclick="showScreen('screen-hotels')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-chevron-left"></i></div>
+                <div style="display:flex; gap:8px;">
+                  <div class="back-btn" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-share-nodes"></i></div>
+                  <div class="back-btn" onclick="showScreen('screen-favorites')" style="background:rgba(255,255,255,0.9);"><i class="fa-solid fa-heart" style="color:var(--accent);"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding:16px 20px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <h2 style="font-size:22px; font-weight:800;">Hyatt Regency Chandigarh</h2>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;"><i class="fa-solid fa-location-dot"></i> Sector 17, Chandigarh</p>
+                </div>
+                <div style="background:var(--badge-bg); color:var(--badge-text); padding:4px 8px; border-radius:8px; font-size:13px; font-weight:800;">★ 4.6</div>
+              </div>
+
+              <!-- Tabs -->
+              <div style="display:flex; border-bottom:1px solid var(--border-color); margin:14px 0;">
+                <div style="padding:8px 12px; font-size:13px; font-weight:700; color:var(--primary); border-bottom:2px solid var(--primary);">Overview</div>
+                <div onclick="showScreen('screen-room-select')" style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer;">Rooms</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Amenities</div>
+                <div style="padding:8px 12px; font-size:13px; font-weight:600; color:var(--text-muted);">Reviews</div>
+              </div>
+
+              <!-- Amenities Grid -->
+              <div style="display:flex; justify-content:space-between; margin:16px 0; background:#fff; padding:12px 16px; border-radius:14px; border:1px solid var(--border-color);">
+                <div style="text-align:center; font-size:11px; font-weight:700;"><i class="fa-solid fa-water-ladder" style="font-size:18px; color:var(--primary); margin-bottom:4px; display:block;"></i> Pool</div>
+                <div style="text-align:center; font-size:11px; font-weight:700;"><i class="fa-solid fa-wifi" style="font-size:18px; color:var(--primary); margin-bottom:4px; display:block;"></i> Wi-Fi</div>
+                <div style="text-align:center; font-size:11px; font-weight:700;"><i class="fa-solid fa-spa" style="font-size:18px; color:var(--primary); margin-bottom:4px; display:block;"></i> Spa</div>
+                <div style="text-align:center; font-size:11px; font-weight:700;"><i class="fa-solid fa-utensils" style="font-size:18px; color:var(--primary); margin-bottom:4px; display:block;"></i> Restaurant</div>
+              </div>
+
+              <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">
+                Experience luxury hospitality at Hyatt Regency Chandigarh. Centrally located near shopping and business hubs with world-class wellness, dining, and suites.
+              </p>
+            </div>
+
+            <div style="position:absolute; bottom:16px; left:20px; right:20px; display:flex; justify-content:space-between; align-items:center; background:#fff; padding:10px 16px; border-radius:24px; border:1px solid var(--border-color); box-shadow:0 8px 20px rgba(0,0,0,0.06);">
+              <div>
+                <div style="font-size:11px; color:var(--text-muted);">Starts from</div>
+                <div style="font-size:17px; font-weight:800; color:var(--text-main);">₹9,000 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></div>
+              </div>
+              <button class="btn-accent" onclick="showScreen('screen-room-select')" style="width:130px; height:42px;">View Rooms</button>
+            </div>
+          </div>
+
+          <!-- ================= ROW 3 SCREENS ================= -->
+
+          <!-- 18. SELECT ROOM -->
+          <div class="screen" id="screen-room-select" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-hotel-details')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Select Room</h3>
+              <div></div>
+            </div>
+
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">15 Apr - 16 Apr • 2 Guests, 1 Room</p>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <!-- Room 1: King Room -->
+              <div class="card" style="padding:14px;">
+                <div style="display:flex; gap:12px;">
+                  <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=200&q=80" style="width:75px; height:75px; border-radius:12px; object-fit:cover;" alt="King Room">
+                  <div style="flex:1;">
+                    <h4 style="font-size:15px; font-weight:800;">King Room</h4>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">1 King bed • 2 guests</p>
+                    <p style="font-size:11px; color:var(--text-muted);">Free WiFi • Breakfast</p>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--border-color); padding-top:10px;">
+                  <span style="font-size:17px; font-weight:800; color:var(--text-main);">₹9,800 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></span>
+                  <button class="btn-accent" onclick="showScreen('screen-hotel-review')" style="width:90px; height:36px; font-size:13px;">Select</button>
+                </div>
+              </div>
+
+              <!-- Room 2: Twin Room -->
+              <div class="card" style="padding:14px;">
+                <div style="display:flex; gap:12px;">
+                  <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80" style="width:75px; height:75px; border-radius:12px; object-fit:cover;" alt="Twin Room">
+                  <div style="flex:1;">
+                    <h4 style="font-size:15px; font-weight:800;">Twin Room</h4>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">2 Single beds • 2 guests</p>
+                    <p style="font-size:11px; color:var(--text-muted);">Free WiFi</p>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--border-color); padding-top:10px;">
+                  <span style="font-size:17px; font-weight:800; color:var(--text-main);">₹11,500 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></span>
+                  <button class="btn-primary" onclick="showScreen('screen-hotel-review')" style="width:90px; height:36px; font-size:13px;">Select</button>
+                </div>
+              </div>
+
+              <!-- Room 3: Suite Room -->
+              <div class="card" style="padding:14px;">
+                <div style="display:flex; gap:12px;">
+                  <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&q=80" style="width:75px; height:75px; border-radius:12px; object-fit:cover;" alt="Suite Room">
+                  <div style="flex:1;">
+                    <h4 style="font-size:15px; font-weight:800;">Suite Room</h4>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">1 King bed • 3 guests</p>
+                    <p style="font-size:11px; color:var(--text-muted);">City view • Breakfast • Spa</p>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid var(--border-color); padding-top:10px;">
+                  <span style="font-size:17px; font-weight:800; color:var(--text-main);">₹15,200 <span style="font-size:11px; font-weight:500; color:var(--text-muted);">/ night</span></span>
+                  <button class="btn-primary" onclick="showScreen('screen-hotel-review')" style="width:90px; height:36px; font-size:13px;">Select</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 19. HOTEL BOOKING REVIEW -->
+          <div class="screen" id="screen-hotel-review" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-room-select')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Review Your Booking</h3>
+              <div></div>
+            </div>
+
+            <!-- Hotel Summary Card -->
+            <div class="card" style="margin-bottom:14px; display:flex; gap:12px; align-items:center;">
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Hotel">
+              <div>
+                <h4 style="font-size:15px; font-weight:800;">Hyatt Regency Chandigarh</h4>
+                <p style="font-size:12px; color:var(--text-muted);">King Room • 1 King bed • 2 guests</p>
+              </div>
+            </div>
+
+            <!-- Stay Dates Card -->
+            <div class="card" style="margin-bottom:14px; font-size:13px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="color:var(--text-muted);">Check-in:</span>
+                <strong>Tue, 15 Apr 2025</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="color:var(--text-muted);">Check-out:</span>
+                <strong>Wed, 16 Apr 2025</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span style="color:var(--text-muted);">Total Duration:</span>
+                <strong>1 Night</strong>
+              </div>
+            </div>
+
+            <!-- Price Breakdown Card -->
+            <div class="card" style="margin-bottom:20px;">
+              <h4 style="font-size:14px; font-weight:800; margin-bottom:10px;">Price Details</h4>
+              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+                <span style="color:var(--text-muted);">Room (1 Night):</span>
+                <span>₹9,800</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:10px;">
+                <span style="color:var(--text-muted);">Taxes & Fees:</span>
+                <span>₹1,200</span>
+              </div>
+              <hr style="border:none; border-top:1px solid var(--border-color); margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:800;">
+                <span>Total Amount:</span>
+                <span style="color:var(--primary);">₹10,200</span>
+              </div>
+            </div>
+
+            <button class="btn-accent" onclick="showScreen('screen-payment')">Proceed to Payment</button>
+          </div>
+
+          <!-- 20. PAYMENT METHOD -->
+          <div class="screen" id="screen-payment" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-hotel-review')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Payment Method</h3>
+              <div></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+              <!-- UPI -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center; border:2px solid var(--primary); background:#F4FAF7;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <i class="fa-solid fa-mobile-screen" style="font-size:22px; color:var(--primary);"></i>
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">UPI</div>
+                    <div style="font-size:11px; color:var(--text-muted);">Pay using any UPI app</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-circle-check" style="color:var(--primary); font-size:18px;"></i>
+              </div>
+
+              <!-- Credit / Debit Card -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <i class="fa-regular fa-credit-card" style="font-size:22px; color:var(--text-muted);"></i>
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">Credit / Debit Card</div>
+                    <div style="font-size:11px; color:var(--text-muted);">Visa, MasterCard, RuPay</div>
+                  </div>
+                </div>
+                <div style="width:18px; height:18px; border-radius:50%; border:1px solid var(--border-color);"></div>
+              </div>
+
+              <!-- Net Banking -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <i class="fa-solid fa-building-columns" style="font-size:22px; color:var(--text-muted);"></i>
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">Net Banking</div>
+                    <div style="font-size:11px; color:var(--text-muted);">All major banks</div>
+                  </div>
+                </div>
+                <div style="width:18px; height:18px; border-radius:50%; border:1px solid var(--border-color);"></div>
+              </div>
+
+              <!-- Wallet -->
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <i class="fa-solid fa-wallet" style="font-size:22px; color:var(--text-muted);"></i>
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">Wallet</div>
+                    <div style="font-size:11px; color:var(--text-muted);">Paytm, PhonePe, etc.</div>
+                  </div>
+                </div>
+                <div style="width:18px; height:18px; border-radius:50%; border:1px solid var(--border-color);"></div>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px;">
+              <input type="checkbox" checked id="savePayment" style="accent-color:var(--primary);">
+              <label for="savePayment" style="font-size:12px; color:var(--text-muted);">Save this payment method for future</label>
+            </div>
+
+            <button class="btn-accent" onclick="showScreen('screen-confirmed')">Pay ₹10,200</button>
+          </div>
+
+          <!-- 21. BOOKING CONFIRMED -->
+          <div class="screen" id="screen-confirmed" style="padding:24px; text-align:center; justify-content:center; align-items:center;">
+            <div style="width:80px; height:80px; border-radius:50%; background:var(--badge-bg); display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+              <i class="fa-solid fa-check" style="font-size:38px; color:var(--primary);"></i>
+            </div>
+            <h2 style="font-size:24px; font-weight:800; color:var(--text-main);">Booking Confirmed!</h2>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">Your hotel has been booked successfully.</p>
+
+            <div class="card" style="width:100%; margin:24px 0; text-align:left; display:flex; gap:12px;">
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Hyatt Regency">
+              <div>
+                <h4 style="font-size:14.5px; font-weight:800;">Hyatt Regency Chandigarh</h4>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">King Room • 15 Apr - 16 Apr 2025</p>
+                <div style="font-size:11px; font-weight:800; color:var(--primary); margin-top:4px;">Booking ID: #BR25678</div>
+              </div>
+            </div>
+
+            <div style="width:100%; display:flex; gap:10px; margin-bottom:14px;">
+              <button class="btn-primary" onclick="showScreen('screen-bookings')" style="flex:1;">View Booking</button>
+              <button class="btn-outline" style="flex:1;"><i class="fa-solid fa-share-nodes" style="margin-right:6px;"></i> Share</button>
+            </div>
+            <p style="font-size:11px; color:var(--text-muted);">You will receive a confirmation on your registered email.</p>
+          </div>
+
+          <!-- 22. MY BOOKINGS -->
+          <div class="screen" id="screen-bookings" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <h3 class="title" style="font-size:20px;">My Bookings</h3>
+              <div></div>
+            </div>
+
+            <!-- Tabs: Upcoming / Past / Cancelled -->
+            <div style="display:flex; background:#E2E8E5; border-radius:12px; padding:4px; margin-bottom:16px;">
+              <div style="flex:1; text-align:center; padding:7px 0; border-radius:9px; font-size:12px; font-weight:700; background:var(--primary); color:#fff; cursor:pointer;">Upcoming (2)</div>
+              <div style="flex:1; text-align:center; padding:7px 0; border-radius:9px; font-size:12px; font-weight:600; color:var(--text-muted); cursor:pointer;">Past (5)</div>
+              <div style="flex:1; text-align:center; padding:7px 0; border-radius:9px; font-size:12px; font-weight:600; color:var(--text-muted); cursor:pointer;" onclick="showScreen('screen-cancel')">Cancelled (1)</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Item 1: The Brew Estate -->
+              <div class="card" style="padding:12px;">
+                <div style="display:flex; gap:12px;">
+                  <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="The Brew Estate">
+                  <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between;">
+                      <h4 style="font-size:14.5px; font-weight:700;">The Brew Estate</h4>
+                      <span style="background:#E8F5EE; color:var(--primary); font-size:10px; font-weight:800; padding:2px 6px; border-radius:6px;">Upcoming</span>
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Table Reservation • Tue, 15 Apr • 7:00 PM</p>
+                    <p style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-users"></i> 2 Guests</p>
+                  </div>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:10px; border-top:1px solid var(--border-color); padding-top:8px;">
+                  <button class="btn-outline" onclick="showScreen('screen-res-details')" style="flex:1; height:36px; font-size:12px;">View Details</button>
+                  <button class="btn-outline" onclick="showScreen('screen-cancel')" style="flex:1; height:36px; font-size:12px; color:#D32F2F; border-color:#FFCDD2;">Cancel</button>
+                </div>
+              </div>
+
+              <!-- Item 2: Taj Chandigarh -->
+              <div class="card" style="padding:12px;">
+                <div style="display:flex; gap:12px;">
+                  <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200&q=80" style="width:65px; height:65px; border-radius:12px; object-fit:cover;" alt="Taj Chandigarh">
+                  <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between;">
+                      <h4 style="font-size:14.5px; font-weight:700;">Taj Chandigarh</h4>
+                      <span style="background:#E8F5EE; color:var(--primary); font-size:10px; font-weight:800; padding:2px 6px; border-radius:6px;">Upcoming</span>
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Room Booking • 18 Apr - 20 Apr</p>
+                    <p style="font-size:11px; color:var(--text-muted);"><i class="fa-solid fa-users"></i> 2 Guests • 1 Room</p>
+                  </div>
+                </div>
+                <div style="display:flex; gap:8px; margin-top:10px; border-top:1px solid var(--border-color); padding-top:8px;">
+                  <button class="btn-outline" onclick="showScreen('screen-hotel-details')" style="flex:1; height:36px; font-size:12px;">View Details</button>
+                  <button class="btn-outline" onclick="showScreen('screen-cancel')" style="flex:1; height:36px; font-size:12px; color:#D32F2F; border-color:#FFCDD2;">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 23. CANCEL RESERVATION -->
+          <div class="screen" id="screen-cancel" style="padding:22px; text-align:center;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-bookings')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Cancel Reservation</h3>
+              <div></div>
+            </div>
+
+            <div style="width:64px; height:64px; border-radius:50%; background:#FFEBEE; display:flex; align-items:center; justify-content:center; margin:10px auto 16px;">
+              <i class="fa-solid fa-triangle-exclamation" style="font-size:28px; color:#D32F2F;"></i>
+            </div>
+            <h3 style="font-size:19px; font-weight:800;">Are you sure you want to cancel this reservation?</h3>
+
+            <div class="card" style="margin:20px 0; text-align:left; display:flex; gap:12px; align-items:center;">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" style="width:60px; height:60px; border-radius:10px; object-fit:cover;" alt="The Brew Estate">
+              <div>
+                <h4 style="font-size:14.5px; font-weight:800;">The Brew Estate</h4>
+                <p style="font-size:12px; color:var(--text-muted);">Tue, 15 Apr 2025 • 7:00 PM</p>
+                <p style="font-size:11px; color:var(--text-muted);">2 Guests</p>
+              </div>
+            </div>
+
+            <div style="text-align:left; margin-bottom:20px;">
+              <label style="font-size:12px; font-weight:700;">Select Reason</label>
+              <select style="width:100%; height:46px; border-radius:12px; border:1px solid var(--border-color); padding:0 12px; margin-top:6px; font-size:13px; background:#fff;">
+                <option>Change of plans</option>
+                <option>Found another venue</option>
+                <option>Emergency</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <button class="btn-accent" onclick="showScreen('screen-empty-bookings')" style="background:#D32F2F; margin-bottom:10px;">Cancel Reservation</button>
+            <button class="btn-outline" onclick="showScreen('screen-bookings')">Keep Reservation</button>
+          </div>
+
+          <!-- 24. NOTIFICATIONS -->
+          <div class="screen" id="screen-notif" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Notifications</h3>
+              <div></div>
+            </div>
+
+            <!-- Tabs -->
+            <div style="display:flex; gap:6px; margin-bottom:14px;">
+              <span style="padding:5px 12px; background:var(--primary); color:#fff; border-radius:14px; font-size:11.5px; font-weight:700;">All</span>
+              <span style="padding:5px 12px; background:#fff; border:1px solid var(--border-color); border-radius:14px; font-size:11.5px; font-weight:600;">Bookings</span>
+              <span style="padding:5px 12px; background:#fff; border:1px solid var(--border-color); border-radius:14px; font-size:11.5px; font-weight:600;">Offers</span>
+              <span style="padding:5px 12px; background:#fff; border:1px solid var(--border-color); border-radius:14px; font-size:11.5px; font-weight:600;">Updates</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <!-- 1 -->
+              <div class="card" style="display:flex; gap:12px; align-items:flex-start; padding:12px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:#E8F5EE; display:flex; align-items:center; justify-content:center; color:var(--primary); flex-shrink:0;">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                  <h4 style="font-size:13px; font-weight:700;">Booking Confirmed</h4>
+                  <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Your table reservation at The Brew Estate is confirmed.</p>
+                  <span style="font-size:10px; color:var(--text-muted); margin-top:4px; display:block;">10m ago</span>
+                </div>
+              </div>
+
+              <!-- 2 -->
+              <div class="card" style="display:flex; gap:12px; align-items:flex-start; padding:12px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:#FFF3E0; display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0;">
+                  <i class="fa-solid fa-tag"></i>
+                </div>
+                <div>
+                  <h4 style="font-size:13px; font-weight:700;">Offer for You</h4>
+                  <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Get 20% off on all weekend hotel reservations.</p>
+                  <span style="font-size:10px; color:var(--text-muted); margin-top:4px; display:block;">1h ago</span>
+                </div>
+              </div>
+
+              <!-- 3 -->
+              <div class="card" style="display:flex; gap:12px; align-items:flex-start; padding:12px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:#E3F2FD; display:flex; align-items:center; justify-content:center; color:#1976D2; flex-shrink:0;">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                  <h4 style="font-size:13px; font-weight:700;">Reminder</h4>
+                  <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Your reservation is tomorrow at 7:00 PM.</p>
+                  <span style="font-size:10px; color:var(--text-muted); margin-top:4px; display:block;">3h ago</span>
+                </div>
+              </div>
+
+              <!-- 4 -->
+              <div class="card" style="display:flex; gap:12px; align-items:flex-start; padding:12px;">
+                <div style="width:36px; height:36px; border-radius:50%; background:#FFEBEE; display:flex; align-items:center; justify-content:center; color:#D32F2F; flex-shrink:0;">
+                  <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+                <div>
+                  <h4 style="font-size:13px; font-weight:700;">Booking Cancelled</h4>
+                  <p style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">Your booking #BR1029 has been cancelled.</p>
+                  <span style="font-size:10px; color:var(--text-muted); margin-top:4px; display:block;">1d ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 25. USER PROFILE -->
+          <div class="screen" id="screen-profile" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <h3 class="title" style="font-size:20px;">Profile</h3>
+              <div class="back-btn" onclick="showScreen('screen-settings')"><i class="fa-solid fa-pen"></i></div>
+            </div>
+
+            <!-- Profile Info Card -->
+            <div class="card" style="display:flex; align-items:center; gap:14px; margin-bottom:16px; padding:14px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800;">
+                S
+              </div>
+              <div>
+                <h4 style="font-size:16px; font-weight:800;">Sneha Patel</h4>
+                <p style="font-size:12px; color:var(--text-muted);">sneha@example.com</p>
+                <span style="font-size:11px; font-weight:700; color:var(--primary);">+91 98765-43210</span>
+              </div>
+            </div>
+
+            <!-- Profile Menu -->
+            <div class="card" style="padding:6px 0; display:flex; flex-direction:column;">
+              <div onclick="showScreen('screen-bookings')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-regular fa-calendar-check" style="width:16px; color:var(--primary);"></i> My Bookings</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-favorites')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-regular fa-heart" style="width:16px; color:var(--primary);"></i> Favorites</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-addresses')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-solid fa-location-dot" style="width:16px; color:var(--primary);"></i> My Addresses</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-payment')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-regular fa-credit-card" style="width:16px; color:var(--primary);"></i> Payment Methods</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-offers')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-solid fa-tags" style="width:16px; color:var(--primary);"></i> Offers & Coupons</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-settings')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-solid fa-gear" style="width:16px; color:var(--primary);"></i> Settings</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-help')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:600;"><i class="fa-solid fa-circle-question" style="width:16px; color:var(--primary);"></i> Help & Support</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div onclick="showScreen('screen-login')" style="display:flex; justify-content:space-between; align-items:center; padding:11px 16px; cursor:pointer; color:#D32F2F;">
+                <div style="display:flex; align-items:center; gap:12px; font-size:13px; font-weight:700;"><i class="fa-solid fa-arrow-right-from-bracket" style="width:16px;"></i> Logout</div>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px;"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 26. SETTINGS -->
+          <div class="screen" id="screen-settings" style="padding:18px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-profile')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Settings</h3>
+              <div></div>
+            </div>
+
+            <div class="card" style="padding:6px 0; display:flex; flex-direction:column;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Profile Information</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Change Password</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Notification Settings</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Language</span>
+                <span style="font-size:12px; color:var(--text-muted);">English <i class="fa-solid fa-chevron-right" style="font-size:10px; margin-left:4px;"></i></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Privacy & Security</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; cursor:pointer;">
+                <span style="font-size:13px; font-weight:600;">Terms & Conditions</span>
+                <i class="fa-solid fa-chevron-right" style="font-size:11px; color:var(--text-muted);"></i>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px;">
+                <span style="font-size:13px; font-weight:600;">About App</span>
+                <span style="font-size:12px; color:var(--text-muted); font-weight:700;">v1.0.0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= ROW 4 SCREENS ================= -->
+
+          <!-- 27. OFFERS & COUPONS -->
+          <div class="screen" id="screen-offers" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Offers & Coupons</h3>
+              <div></div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div style="display:flex; gap:6px; margin-bottom:16px;">
+              <span style="padding:6px 14px; background:var(--primary); color:#fff; border-radius:16px; font-size:11.5px; font-weight:700;">All</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600;">Restaurants</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600;">Hotels</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600;">Party Halls</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Coupon 1 -->
+              <div class="card" style="border:1.5px dashed var(--accent); background:#FFF9F5;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <span style="font-size:18px; font-weight:800; color:var(--accent);">FLAT 20% OFF</span>
+                    <p style="font-size:12px; color:var(--text-main); font-weight:600; margin-top:2px;">on Table Reservations</p>
+                    <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Use Code: <strong style="color:var(--text-main);">DINE20</strong></p>
+                  </div>
+                  <button style="background:var(--accent); color:#fff; border:none; padding:6px 14px; border-radius:14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="showScreen('screen-table-res')">Apply</button>
+                </div>
+              </div>
+
+              <!-- Coupon 2 -->
+              <div class="card" style="border:1.5px dashed var(--primary); background:#F4FAF7;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <span style="font-size:18px; font-weight:800; color:var(--primary);">FLAT 15% OFF</span>
+                    <p style="font-size:12px; color:var(--text-main); font-weight:600; margin-top:2px;">on Hotel Bookings</p>
+                    <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Use Code: <strong style="color:var(--text-main);">STAY15</strong></p>
+                  </div>
+                  <button style="background:var(--primary); color:#fff; border:none; padding:6px 14px; border-radius:14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="showScreen('screen-hotels')">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 28. FAVORITES -->
+          <div class="screen" id="screen-favorites" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Favorites</h3>
+              <div></div>
+            </div>
+
+            <!-- Tabs -->
+            <div style="display:flex; gap:6px; margin-bottom:16px;">
+              <span style="padding:6px 14px; background:var(--primary); color:#fff; border-radius:16px; font-size:11.5px; font-weight:700;">Restaurants</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600;">Hotels</span>
+              <span style="padding:6px 14px; background:#fff; border:1px solid var(--border-color); border-radius:16px; font-size:11.5px; font-weight:600;">Party Halls</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Fav 1: The Brew Estate -->
+              <div class="card" onclick="showScreen('screen-res-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80" style="width:75px; height:75px; border-radius:12px; object-fit:cover;" alt="The Brew Estate">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14.5px; font-weight:700;">The Brew Estate</h4>
+                    <span style="color:var(--accent);"><i class="fa-solid fa-heart"></i></span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">★ 4.5 (1.2k) • Sector 26, Chandigarh</p>
+                  <p style="font-size:11px; color:var(--text-muted);">Continental • North Indian</p>
+                </div>
+              </div>
+
+              <!-- Fav 2: Hyatt Regency -->
+              <div class="card" onclick="showScreen('screen-hotel-details')" style="cursor:pointer; display:flex; gap:12px;">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80" style="width:75px; height:75px; border-radius:12px; object-fit:cover;" alt="Hyatt Regency">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <h4 style="font-size:14.5px; font-weight:700;">Hyatt Regency Chandigarh</h4>
+                    <span style="color:var(--accent);"><i class="fa-solid fa-heart"></i></span>
+                  </div>
+                  <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">★ 4.6 • Sector 17, Chandigarh</p>
+                  <p style="font-size:12px; font-weight:700; color:var(--primary); margin-top:2px;">₹9,000 / night</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 29. SAVED ADDRESSES -->
+          <div class="screen" id="screen-addresses" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-profile')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Saved Addresses</h3>
+              <div></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:18px;">
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <div style="width:40px; height:40px; border-radius:50%; background:#E8F5EE; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:16px;">
+                    <i class="fa-solid fa-house"></i>
+                  </div>
+                  <div>
+                    <h4 style="font-size:14px; font-weight:800;">Home</h4>
+                    <p style="font-size:12px; color:var(--text-muted);">Sector 26, Chandigarh, 160022</p>
+                  </div>
+                </div>
+                <div style="display:flex; gap:10px; color:var(--text-muted);">
+                  <i class="fa-solid fa-pen" style="cursor:pointer; font-size:13px;"></i>
+                </div>
+              </div>
+
+              <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
+                  <div style="width:40px; height:40px; border-radius:50%; background:#FFF3E0; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:16px;">
+                    <i class="fa-solid fa-briefcase"></i>
+                  </div>
+                  <div>
+                    <h4 style="font-size:14px; font-weight:800;">Work</h4>
+                    <p style="font-size:12px; color:var(--text-muted);">Sector 22, Chandigarh, 160022</p>
+                  </div>
+                </div>
+                <div style="display:flex; gap:10px; color:var(--text-muted);">
+                  <i class="fa-solid fa-pen" style="cursor:pointer; font-size:13px;"></i>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-outline" style="border:1.5px dashed var(--primary); color:var(--primary); font-weight:700;">
+              <i class="fa-solid fa-plus" style="margin-right:8px;"></i> Add New Address
+            </button>
+          </div>
+
+          <!-- 30. HELP & SUPPORT -->
+          <div class="screen" id="screen-help" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:14px;">
+              <div class="back-btn" onclick="showScreen('screen-profile')"><i class="fa-solid fa-chevron-left"></i></div>
+              <h3 class="title">Help & Support</h3>
+              <div></div>
+            </div>
+
+            <div class="card" style="padding:6px 0; display:flex; flex-direction:column; margin-bottom:16px;">
+              <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;">
+                <i class="fa-solid fa-circle-question" style="color:var(--primary); font-size:16px; width:20px;"></i>
+                <span style="font-size:13px; font-weight:600;">FAQs</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;">
+                <i class="fa-solid fa-comments" style="color:var(--primary); font-size:16px; width:20px;"></i>
+                <span style="font-size:13px; font-weight:600;">Contact Us</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;">
+                <i class="fa-solid fa-triangle-exclamation" style="color:var(--primary); font-size:16px; width:20px;"></i>
+                <span style="font-size:13px; font-weight:600;">Report an Issue</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;">
+                <i class="fa-regular fa-star" style="color:var(--primary); font-size:16px; width:20px;"></i>
+                <span style="font-size:13px; font-weight:600;">Feedback</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer;">
+                <i class="fa-solid fa-phone" style="color:var(--primary); font-size:16px; width:20px;"></i>
+                <span style="font-size:13px; font-weight:600;">Call Support</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 31. NO RESULTS FOUND -->
+          <div class="screen" id="screen-no-results" style="padding:24px; text-align:center; justify-content:center; align-items:center;">
+            <div style="width:80px; height:80px; border-radius:50%; background:#E8F5EE; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+              <i class="fa-solid fa-magnifying-glass" style="font-size:36px; color:var(--primary);"></i>
+            </div>
+            <h3 style="font-size:20px; font-weight:800;">No Results Found</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:6px; max-width:260px;">We couldn't find any restaurants matching your search. Try changing your filters.</p>
+            <button class="btn-primary" onclick="showScreen('screen-search')" style="margin-top:24px; max-width:180px;">Clear Filters</button>
+          </div>
+
+          <!-- 32. LOADING SKELETON (LIST) -->
+          <div class="screen" id="screen-loading-list" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <div class="skeleton" style="width:140px; height:20px; border-radius:10px;"></div>
+              <div></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="card" style="display:flex; gap:12px; padding:14px;">
+                <div class="skeleton" style="width:80px; height:80px; border-radius:12px; flex-shrink:0;"></div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                  <div class="skeleton" style="width:65%; height:16px;"></div>
+                  <div class="skeleton" style="width:45%; height:12px;"></div>
+                  <div class="skeleton" style="width:30%; height:14px;"></div>
+                </div>
+              </div>
+
+              <div class="card" style="display:flex; gap:12px; padding:14px;">
+                <div class="skeleton" style="width:80px; height:80px; border-radius:12px; flex-shrink:0;"></div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                  <div class="skeleton" style="width:75%; height:16px;"></div>
+                  <div class="skeleton" style="width:50%; height:12px;"></div>
+                  <div class="skeleton" style="width:35%; height:14px;"></div>
+                </div>
+              </div>
+
+              <div class="card" style="display:flex; gap:12px; padding:14px;">
+                <div class="skeleton" style="width:80px; height:80px; border-radius:12px; flex-shrink:0;"></div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                  <div class="skeleton" style="width:60%; height:16px;"></div>
+                  <div class="skeleton" style="width:40%; height:12px;"></div>
+                  <div class="skeleton" style="width:30%; height:14px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 33. SKELETON DETAIL / GRID -->
+          <div class="screen" id="screen-loading-grid" style="padding:16px;">
+            <div class="screen-header" style="padding:0; margin-bottom:16px;">
+              <div class="back-btn" onclick="showScreen('screen-home')"><i class="fa-solid fa-chevron-left"></i></div>
+              <div class="skeleton" style="width:120px; height:20px; border-radius:10px;"></div>
+              <div></div>
+            </div>
+
+            <div class="skeleton" style="width:100%; height:180px; border-radius:18px; margin-bottom:16px;"></div>
+
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div class="skeleton" style="width:80%; height:22px;"></div>
+              <div class="skeleton" style="width:50%; height:14px;"></div>
+              <div style="display:flex; gap:10px; margin:12px 0;">
+                <div class="skeleton" style="flex:1; height:45px; border-radius:12px;"></div>
+                <div class="skeleton" style="flex:1; height:45px; border-radius:12px;"></div>
+                <div class="skeleton" style="flex:1; height:45px; border-radius:12px;"></div>
+              </div>
+              <div class="skeleton" style="width:100%; height:80px; border-radius:14px;"></div>
+            </div>
+          </div>
+
+          <!-- 34. ERROR STATE -->
+          <div class="screen" id="screen-error" style="padding:24px; text-align:center; justify-content:center; align-items:center;">
+            <div style="width:80px; height:80px; border-radius:50%; background:#FFF3E0; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+              <i class="fa-solid fa-plug-circle-exclamation" style="font-size:36px; color:var(--accent);"></i>
+            </div>
+            <h3 style="font-size:20px; font-weight:800;">Something Went Wrong</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:6px;">Please try again later.</p>
+            <button class="btn-primary" onclick="showScreen('screen-home')" style="margin-top:24px; max-width:180px;">Try Again</button>
+          </div>
+
+          <!-- 35. EMPTY BOOKINGS STATE -->
+          <div class="screen" id="screen-empty-bookings" style="padding:24px; text-align:center; justify-content:center; align-items:center;">
+            <div style="width:80px; height:80px; border-radius:50%; background:#E8F5EE; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+              <i class="fa-regular fa-calendar-xmark" style="font-size:36px; color:var(--primary);"></i>
+            </div>
+            <h3 style="font-size:20px; font-weight:800;">No Bookings Yet</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-top:6px; max-width:260px;">You haven't made any reservations yet. Explore restaurants and hotels to book now.</p>
+            <button class="btn-primary" onclick="showScreen('screen-home')" style="margin-top:24px; max-width:180px;">Explore Now</button>
+          </div>
+
+        </div>
+
+        <!-- Persistent Bottom App Navigation -->
+        <nav class="app-bottom-nav" id="appBottomNav">
+          <div class="nav-item active" id="tab-home" onclick="showScreen('screen-home')">
+            <i class="fa-solid fa-compass"></i>
+            <span>Explore</span>
+          </div>
+          <div class="nav-item" id="tab-bookings" onclick="showScreen('screen-bookings')">
+            <i class="fa-regular fa-calendar"></i>
+            <span>Bookings</span>
+          </div>
+          <div class="nav-item" id="tab-favs" onclick="showScreen('screen-favorites')">
+            <i class="fa-regular fa-heart"></i>
+            <span>Favorites</span>
+          </div>
+          <div class="nav-item" id="tab-profile" onclick="showScreen('screen-profile')">
+            <i class="fa-regular fa-user"></i>
+            <span>Profile</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- 2. ALL 35 SCREENS BOARD MODE (FIGMA WIREFRAME VIEW) -->
+    <div id="board-view">
+      <div class="board-header">
+        <h2>DineStay Application Screen Architecture (All 35 Screens)</h2>
+        <p>Complete High-Fidelity Wireframe Board matching the client specification. Click any screen to test in interactive phone mode.</p>
+      </div>
+
+      <!-- ROW 1 -->
+      <div class="board-row-label">
+        <i class="fa-solid fa-arrow-right"></i> Row 1: Splash, Onboarding, Authentication & Discovery (Screens 1 to 9)
+      </div>
+      <div class="board-row-grid" id="grid-row-1">
+        <!-- Rendered dynamically for maximum performance -->
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="board-row-label">
+        <i class="fa-solid fa-arrow-right"></i> Row 2: Dining, Table Reservations & Banquet Party Halls (Screens 10 to 17)
+      </div>
+      <div class="board-row-grid" id="grid-row-2"></div>
+
+      <!-- ROW 3 -->
+      <div class="board-row-label">
+        <i class="fa-solid fa-arrow-right"></i> Row 3: Hotel Stays, Multi-Channel Payment & User Account (Screens 18 to 26)
+      </div>
+      <div class="board-row-grid" id="grid-row-3"></div>
+
+      <!-- ROW 4 -->
+      <div class="board-row-label">
+        <i class="fa-solid fa-arrow-right"></i> Row 4: Offers, Wishlist, Addresses, Support & System Fallbacks (Screens 27 to 35)
+      </div>
+      <div class="board-row-grid" id="grid-row-4"></div>
+    </div>
+
+  </main>
+
+  <!-- Floating Quick Jump Drawer Button -->
+  <div class="floating-switcher">
+    <div class="switcher-btn" onclick="openSwitcher()">
+      <i class="fa-solid fa-layer-group"></i> Quick Jump (35 Screens)
+    </div>
+  </div>
+
+  <!-- Quick Jump Modal -->
+  <div class="switcher-modal" id="switcherModal" onclick="closeSwitcher(event)">
+    <div class="switcher-sheet" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h3 style="font-size:16px; font-weight:800;">Jump to Prototype Screen</h3>
+          <p style="font-size:12px; color:#94A3B8; margin-top:2px;">All 35 mobile screens organized by module</p>
+        </div>
+        <span onclick="closeSwitcher()" style="cursor:pointer; font-size:22px; color:#94A3B8;">&times;</span>
+      </div>
+
+      <div class="category-group-title">Row 1: Onboarding, Auth & Discovery</div>
+      <div class="switcher-grid">
+        <div class="switcher-item" onclick="showScreen('screen-splash')">1. Splash Screen</div>
+        <div class="switcher-item" onclick="showScreen('screen-onb1')">2. Onboarding 1</div>
+        <div class="switcher-item" onclick="showScreen('screen-onb2')">3. Onboarding 2</div>
+        <div class="switcher-item" onclick="showScreen('screen-onb3')">4. Onboarding 3</div>
+        <div class="switcher-item" onclick="showScreen('screen-login')">5. Login</div>
+        <div class="switcher-item" onclick="showScreen('screen-signup')">6. Sign Up</div>
+        <div class="switcher-item" onclick="showScreen('screen-otp')">7. Verify OTP</div>
+        <div class="switcher-item" onclick="showScreen('screen-home')">8. Home / Explore</div>
+        <div class="switcher-item" onclick="showScreen('screen-search')">9. Search & Filters</div>
+      </div>
+
+      <div class="category-group-title">Row 2: Dining, Tables & Party Halls</div>
+      <div class="switcher-grid">
+        <div class="switcher-item" onclick="showScreen('screen-res-details')">10. Restaurant Details</div>
+        <div class="switcher-item" onclick="showScreen('screen-menu')">11. Restaurant Menu</div>
+        <div class="switcher-item" onclick="showScreen('screen-table-res')">12. Table Reservation</div>
+        <div class="switcher-item" onclick="showScreen('screen-res-review')">13. Review Reservation</div>
+        <div class="switcher-item" onclick="showScreen('screen-party-halls')">14. Party Halls List</div>
+        <div class="switcher-item" onclick="showScreen('screen-party-details')">15. Party Hall Details</div>
+        <div class="switcher-item" onclick="showScreen('screen-hotels')">16. Hotels List</div>
+        <div class="switcher-item" onclick="showScreen('screen-hotel-details')">17. Hotel Details</div>
+      </div>
+
+      <div class="category-group-title">Row 3: Hotel Stays, Payment & Bookings</div>
+      <div class="switcher-grid">
+        <div class="switcher-item" onclick="showScreen('screen-room-select')">18. Select Room</div>
+        <div class="switcher-item" onclick="showScreen('screen-hotel-review')">19. Hotel Booking Review</div>
+        <div class="switcher-item" onclick="showScreen('screen-payment')">20. Payment Method</div>
+        <div class="switcher-item" onclick="showScreen('screen-confirmed')">21. Booking Confirmed</div>
+        <div class="switcher-item" onclick="showScreen('screen-bookings')">22. My Bookings</div>
+        <div class="switcher-item" onclick="showScreen('screen-cancel')">23. Cancel Reservation</div>
+        <div class="switcher-item" onclick="showScreen('screen-notif')">24. Notifications</div>
+        <div class="switcher-item" onclick="showScreen('screen-profile')">25. User Profile</div>
+        <div class="switcher-item" onclick="showScreen('screen-settings')">26. Settings</div>
+      </div>
+
+      <div class="category-group-title">Row 4: Offers, Account & System States</div>
+      <div class="switcher-grid">
+        <div class="switcher-item" onclick="showScreen('screen-offers')">27. Offers & Coupons</div>
+        <div class="switcher-item" onclick="showScreen('screen-favorites')">28. Favorites Wishlist</div>
+        <div class="switcher-item" onclick="showScreen('screen-addresses')">29. Saved Addresses</div>
+        <div class="switcher-item" onclick="showScreen('screen-help')">30. Help & Support</div>
+        <div class="switcher-item" onclick="showScreen('screen-no-results')">31. No Results Found</div>
+        <div class="switcher-item" onclick="showScreen('screen-loading-list')">32. Loading State (List)</div>
+        <div class="switcher-item" onclick="showScreen('screen-loading-grid')">33. Loading State (Grid)</div>
+        <div class="switcher-item" onclick="showScreen('screen-error')">34. Error State</div>
+        <div class="switcher-item" onclick="showScreen('screen-empty-bookings')">35. Empty Bookings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SRS DOCUMENT & PDF VIEWER MODAL -->
+  <div class="srs-modal" id="srsModal" onclick="closeSrsModal(event)">
+    <div class="srs-window" onclick="event.stopPropagation()">
+      <div class="srs-header">
+        <div>
+          <h3 style="font-size:17px; font-weight:800; color:#fff;">DineStay SRS (Software Requirements Specification)</h3>
+          <p style="font-size:11.5px; opacity:0.85;">Phase 1 MVP • Prepared by Future IT Touch Pvt. Ltd.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a href="DineStay_Software_Requirements_Specification_SRS.pdf" download="DineStay_SRS_FutureITTouch.pdf" style="text-decoration:none;">
+            <button class="srs-doc-btn" style="background:#fff; color:var(--primary); font-size:12px; padding:6px 14px;">
+              <i class="fa-solid fa-download"></i> Download PDF (A4)
+            </button>
+          </a>
+          <span onclick="closeSrsModal()" style="cursor:pointer; font-size:24px; color:#fff;">&times;</span>
+        </div>
+      </div>
+      <div class="srs-body">
+        <div style="border-bottom:2px solid #E2E8F0; padding-bottom:16px; margin-bottom:20px;">
+          <h1 style="color:#0F4735; font-size:24px; font-weight:800;">Future IT Touch Private Limited</h1>
+          <p style="font-size:12.5px; color:#64748B;">Sco No. 113-114, 2nd Floor, Near Mukat Hospital, Sector 34 A, Chandigarh, 160022<br>
+          Phone: +91-7056937000 / +91-7056997000 | Email: info@futuretouch.in</p>
+        </div>
+
+        <h2>Document Details</h2>
+        <table>
+          <tr><th>Attribute</th><th>Specification Detail</th></tr>
+          <tr><td><strong>Document Title</strong></td><td>DineStay: Restaurant, Hotel & Banquet Reservation Platform (SRS)</td></tr>
+          <tr><td><strong>Phase</strong></td><td>Phase 1 – Minimum Viable Product (MVP)</td></tr>
+          <tr><td><strong>Version</strong></td><td>1.0 (Governing Technical Document)</td></tr>
+          <tr><td><strong>Prepared By</strong></td><td>Future IT Touch Pvt. Ltd.</td></tr>
+          <tr><td><strong>Prepared For</strong></td><td>Client Executive Team / Stakeholders</td></tr>
+          <tr><td><strong>Scope Covered</strong></td><td>Complete 35 Verified Mobile UI Screens, Web Portals & Backend APIs</td></tr>
+        </table>
+
+        <h2>1. Executive Summary & Project Deliverables</h2>
+        <p>The DineStay platform delivers a unified 3-in-1 hospitality reservation ecosystem covering Restaurant Table Bookings, Hotel Room Stays, and Banquet / Party Hall event inquiries across Chandigarh and surrounding regions.</p>
+        <table>
+          <tr><th>Deliverable</th><th>Platform</th><th>Technology Stack</th></tr>
+          <tr><td><strong>Customer Mobile Application</strong></td><td>Android & iOS</td><td>Flutter 3.x / Dart (35 Complete UI Screens)</td></tr>
+          <tr><td><strong>Restaurant Business Portal</strong></td><td>Web</td><td>ReactJS / TailwindCSS</td></tr>
+          <tr><td><strong>Hotel Business Portal</strong></td><td>Web</td><td>ReactJS / TailwindCSS</td></tr>
+          <tr><td><strong>Party Hall Business Portal</strong></td><td>Web</td><td>ReactJS / TailwindCSS</td></tr>
+          <tr><td><strong>Administration Portal</strong></td><td>Web</td><td>ReactJS / Admin Dashboard</td></tr>
+          <tr><td><strong>Backend Core Services</strong></td><td>Cloud REST API</td><td>Laravel 11 REST API / JWT Authentication</td></tr>
+          <tr><td><strong>Database Layer</strong></td><td>Cloud Server</td><td>MySQL 8.0 & Redis Cache</td></tr>
+        </table>
+
+        <h2>2. Complete 35-Screen Mobile Architecture Verification</h2>
+        <p>All 35 screens shown in the UI prototype are formally documented in the Phase-1 delivery:</p>
+        <table>
+          <tr><th>#</th><th>Screen Name</th><th>Primary Functionality</th></tr>
+          <tr><td>1</td><td>Splash Screen</td><td>Brand launchpad, DineStay logotype, gourmet culinary hero</td></tr>
+          <tr><td>2</td><td>Onboarding 1</td><td>Dining table discovery, restaurant illustration, pagination</td></tr>
+          <tr><td>3</td><td>Onboarding 2</td><td>Hotel room bookings, luxury room illustration</td></tr>
+          <tr><td>4</td><td>Onboarding 3</td><td>Exclusive coupons and discount vouchers showcase</td></tr>
+          <tr><td>5</td><td>Login</td><td>Credentials input, password recovery, Google & Apple OAuth</td></tr>
+          <tr><td>6</td><td>Sign Up</td><td>Customer vs. Business role toggle pill, field validations</td></tr>
+          <tr><td>7</td><td>OTP Verification</td><td>6-digit numeric PIN, resend countdown timer</td></tr>
+          <tr><td>8</td><td>Home / Explore</td><td>Sector 34 Chandigarh geolocation, 4 categories, Flat 20% banner, Popular cards</td></tr>
+          <tr><td>9</td><td>Search & Filters</td><td>Full-text search, Cuisine, Rating, Offers & Sort chips (126 results)</td></tr>
+          <tr><td>10</td><td>Restaurant Details</td><td>Hero gallery, rating, Call, Directions, Share, Reserve CTA</td></tr>
+          <tr><td>11</td><td>Restaurant Menu</td><td>Categories, Veg/Non-Veg indicators, pricing, Add items</td></tr>
+          <tr><td>12</td><td>Table Reservation</td><td>Date picker, time slots (12 PM-9 PM), guest counter, special notes</td></tr>
+          <tr><td>13</td><td>Review Reservation</td><td>Reservation confirmation summary, confirm button</td></tr>
+          <tr><td>14</td><td>Party Halls List</td><td>Banquet cards (The Grand Hall, Royal Banquet, Celebration Palace)</td></tr>
+          <tr><td>15</td><td>Party Hall Details</td><td>Grand hall specs: capacity 50-300, valet, catering, Book Hall CTA</td></tr>
+          <tr><td>16</td><td>Hotels Search</td><td>Date range, 2 guests 1 room bar, price/amenities filters</td></tr>
+          <tr><td>17</td><td>Hotel Details</td><td>Amenities grid (Pool, Wi-Fi, Spa, Restaurant), View Rooms CTA</td></tr>
+          <tr><td>18</td><td>Select Room</td><td>King Room (₹9,800), Twin Room (₹11,500), Suite Room (₹15,200)</td></tr>
+          <tr><td>19</td><td>Hotel Booking Review</td><td>Check-in/out breakdown, Room ₹9,800 + Tax ₹1,200 = ₹10,200</td></tr>
+          <tr><td>20</td><td>Payment Method</td><td>UPI (GPay/PhonePe), Cards, NetBanking, Wallets, Save method</td></tr>
+          <tr><td>21</td><td>Booking Confirmed</td><td>Celebration badge, Booking ID #BR25678, View & Share</td></tr>
+          <tr><td>22</td><td>My Bookings</td><td>Upcoming (2), Past (5), Cancelled (1) tabs</td></tr>
+          <tr><td>23</td><td>Cancel Reservation</td><td>Confirmation prompt, reason dropdown, policy terms</td></tr>
+          <tr><td>24</td><td>Notifications</td><td>Booking confirmed, offers, reminders, cancellations alerts</td></tr>
+          <tr><td>25</td><td>User Profile</td><td>Sneha Patel profile card, addresses, payment, settings</td></tr>
+          <tr><td>26</td><td>Settings</td><td>Profile info, password, notifications, language, app version</td></tr>
+          <tr><td>27</td><td>Offers & Coupons</td><td>DINE20 (Flat 20% off), STAY15 (Flat 15% off) with 1-click apply</td></tr>
+          <tr><td>28</td><td>Favorites Wishlist</td><td>Saved restaurants and hotels list</td></tr>
+          <tr><td>29</td><td>Saved Addresses</td><td>Home (Sector 26) & Work (Sector 22) address cards</td></tr>
+          <tr><td>30</td><td>Help & Support</td><td>FAQs, Contact Us, Report Issue, Call Support</td></tr>
+          <tr><td>31</td><td>No Results Found</td><td>Magnifying glass graphic, corrective search tips, Clear Filters</td></tr>
+          <tr><td>32</td><td>Loading State (List)</td><td>Shimmer skeleton cards for listings</td></tr>
+          <tr><td>33</td><td>Loading State (Grid)</td><td>Shimmer skeleton placeholders for details & cards</td></tr>
+          <tr><td>34</td><td>Error State</td><td>Network disconnect illustration, reload CTA</td></tr>
+          <tr><td>35</td><td>Empty Bookings</td><td>Calendar empty state, 'Explore Now' prompt</td></tr>
+        </table>
+
+        <h2>3. Commercial Proposal & Timeline</h2>
+        <table>
+          <tr><th>Particulars</th><th>Amount (INR)</th></tr>
+          <tr><td>Phase 1 MVP Development (All 35 Mobile Screens + 3 Web Portals + APIs)</td><td>₹75,000</td></tr>
+          <tr><td>Applicable GST (18%)</td><td>₹13,500</td></tr>
+          <tr><td><strong>Total Investment</strong></td><td><strong>₹88,500</strong></td></tr>
+        </table>
+        <p><strong>Timeline:</strong> 45 to 60 Working Days. Includes 3 Months Complimentary Technical Support.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // All 35 screens metadata
+    const SCREENS_DATA = [
+      // Row 1
+      { id: 'screen-splash', title: 'Splash Screen', num: '1', row: 1 },
+      { id: 'screen-onb1', title: 'Onboarding 1', num: '2', row: 1 },
+      { id: 'screen-onb2', title: 'Onboarding 2', num: '3', row: 1 },
+      { id: 'screen-onb3', title: 'Onboarding 3', num: '4', row: 1 },
+      { id: 'screen-login', title: 'Login', num: '5', row: 1 },
+      { id: 'screen-signup', title: 'Sign Up', num: '6', row: 1 },
+      { id: 'screen-otp', title: 'Verify OTP', num: '7', row: 1 },
+      { id: 'screen-home', title: 'Home / Explore', num: '8', row: 1 },
+      { id: 'screen-search', title: 'Search & Filters', num: '9', row: 1 },
+
+      // Row 2
+      { id: 'screen-res-details', title: 'Restaurant Details', num: '10', row: 2 },
+      { id: 'screen-menu', title: 'Menu', num: '11', row: 2 },
+      { id: 'screen-table-res', title: 'Table Reservation', num: '12', row: 2 },
+      { id: 'screen-res-review', title: 'Review Reservation', num: '13', row: 2 },
+      { id: 'screen-party-halls', title: 'Party Halls List', num: '14', row: 2 },
+      { id: 'screen-party-details', title: 'Party Hall Details', num: '15', row: 2 },
+      { id: 'screen-hotels', title: 'Hotels List', num: '16', row: 2 },
+      { id: 'screen-hotel-details', title: 'Hotel Details', num: '17', row: 2 },
+
+      // Row 3
+      { id: 'screen-room-select', title: 'Select Room', num: '18', row: 3 },
+      { id: 'screen-hotel-review', title: 'Hotel Booking Review', num: '19', row: 3 },
+      { id: 'screen-payment', title: 'Payment Method', num: '20', row: 3 },
+      { id: 'screen-confirmed', title: 'Booking Confirmed!', num: '21', row: 3 },
+      { id: 'screen-bookings', title: 'My Bookings', num: '22', row: 3 },
+      { id: 'screen-cancel', title: 'Cancel Reservation', num: '23', row: 3 },
+      { id: 'screen-notif', title: 'Notifications', num: '24', row: 3 },
+      { id: 'screen-profile', title: 'Profile', num: '25', row: 3 },
+      { id: 'screen-settings', title: 'Settings', num: '26', row: 3 },
+
+      // Row 4
+      { id: 'screen-offers', title: 'Offers & Coupons', num: '27', row: 4 },
+      { id: 'screen-favorites', title: 'Favorites', num: '28', row: 4 },
+      { id: 'screen-addresses', title: 'Saved Addresses', num: '29', row: 4 },
+      { id: 'screen-help', title: 'Help & Support', num: '30', row: 4 },
+      { id: 'screen-no-results', title: 'No Results Found', num: '31', row: 4 },
+      { id: 'screen-loading-list', title: 'Loading State', num: '32', row: 4 },
+      { id: 'screen-loading-grid', title: 'Skeleton Detail', num: '33', row: 4 },
+      { id: 'screen-error', title: 'Error State', num: '34', row: 4 },
+      { id: 'screen-empty-bookings', title: 'Empty Bookings State', num: '35', row: 4 }
+    ];
+
+    let currentScreenId = 'screen-splash';
+
+    function showScreen(screenId) {
+      currentScreenId = screenId;
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        target.scrollTop = 0;
+      }
+
+      // Hide/Show status bar text contrast
+      const statusBar = document.getElementById('statusBar');
+      if (screenId === 'screen-splash') {
+        statusBar.classList.add('dark-text');
+      } else {
+        statusBar.classList.remove('dark-text');
+      }
+
+      // Hide bottom nav on splash, onboarding, login & checkout steps
+      const bottomNav = document.getElementById('appBottomNav');
+      const noNavScreens = [
+        'screen-splash', 'screen-onb1', 'screen-onb2', 'screen-onb3',
+        'screen-login', 'screen-signup', 'screen-otp', 'screen-table-res',
+        'screen-res-review', 'screen-room-select', 'screen-hotel-review',
+        'screen-payment', 'screen-confirmed', 'screen-cancel'
+      ];
+      if (noNavScreens.includes(screenId)) {
+        bottomNav.style.display = 'none';
+      } else {
+        bottomNav.style.display = 'flex';
+      }
+
+      // Sync active tab
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      if (['screen-home', 'screen-search', 'screen-res-details', 'screen-menu', 'screen-party-halls', 'screen-party-details', 'screen-hotels', 'screen-hotel-details', 'screen-no-results'].includes(screenId)) {
+        document.getElementById('tab-home').classList.add('active');
+      } else if (['screen-bookings', 'screen-empty-bookings'].includes(screenId)) {
+        document.getElementById('tab-bookings').classList.add('active');
+      } else if (['screen-favorites', 'screen-offers'].includes(screenId)) {
+        document.getElementById('tab-favs').classList.add('active');
+      } else if (['screen-profile', 'screen-settings', 'screen-addresses', 'screen-help'].includes(screenId)) {
+        document.getElementById('tab-profile').classList.add('active');
+      }
+
+      // Update switcher highlights
+      document.querySelectorAll('.switcher-item').forEach(item => {
+        if (item.getAttribute('onclick')?.includes(screenId)) {
+          item.classList.add('current');
+        } else {
+          item.classList.remove('current');
+        }
+      });
+
+      closeSwitcher();
+    }
+
+    function setAppMode(mode) {
+      const simView = document.getElementById('simulator-view');
+      const boardView = document.getElementById('board-view');
+      const btnSim = document.getElementById('btn-mode-simulator');
+      const btnBoard = document.getElementById('btn-mode-board');
+
+      if (mode === 'simulator') {
+        simView.style.display = 'flex';
+        boardView.style.display = 'none';
+        btnSim.classList.add('active');
+        btnBoard.classList.remove('active');
+        showScreen(currentScreenId);
+      } else {
+        simView.style.display = 'none';
+        boardView.style.display = 'block';
+        btnBoard.classList.add('active');
+        btnSim.classList.remove('active');
+        renderBoardPreviews();
+      }
+    }
+
+    function renderBoardPreviews() {
+      // Populate board rows with clones of all 35 screens
+      [1, 2, 3, 4].forEach(rowNum => {
+        const grid = document.getElementById(`grid-row-${rowNum}`);
+        if (grid && grid.children.length === 0) {
+          const screensInRow = SCREENS_DATA.filter(s => s.row === rowNum);
+          screensInRow.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'board-screen-card';
+            card.onclick = () => {
+              setAppMode('simulator');
+              showScreen(s.id);
+            };
+
+            const preview = document.createElement('div');
+            preview.className = 'board-screen-preview';
+
+            // Clone target screen
+            const originalScreen = document.getElementById(s.id);
+            if (originalScreen) {
+              const clone = originalScreen.cloneNode(true);
+              clone.classList.add('active');
+              clone.style.position = 'absolute';
+              clone.style.top = '0';
+              clone.style.left = '0';
+              clone.style.right = '0';
+              clone.style.bottom = '0';
+              preview.appendChild(clone);
+            }
+
+            card.innerHTML = `
+              <div class="board-screen-num">SCREEN ${s.num}</div>
+              <div class="board-screen-title">${s.title}</div>
+            `;
+            card.insertBefore(preview, card.firstChild);
+            grid.appendChild(card);
+          });
+        }
+      });
+    }
+
+    function openSwitcher() {
+      document.getElementById('switcherModal').classList.add('active');
+    }
+
+    function closeSwitcher(e) {
+      document.getElementById('switcherModal').classList.remove('active');
+    }
+
+    function openSrsModal() {
+      document.getElementById('srsModal').classList.add('active');
+    }
+
+    function closeSrsModal(e) {
+      document.getElementById('srsModal').classList.remove('active');
+    }
+
+    // Initialize default screen
+    showScreen('screen-splash');
+  </script>
+</body>
+</html>
